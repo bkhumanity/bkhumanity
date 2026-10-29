@@ -23,6 +23,10 @@ export const initialSiteSettings: SiteSettings = {
     linkedin: 'https://linkedin.com/company/bkhumanity',
   },
   announcementNotice: 'Development Demonstration Mode: Financial figures & impact metrics are initial illustrative benchmarks editable via the Admin Dashboard.',
+  isSitePaused: true,
+  maintenanceHeadline: 'Official Portal Staging & Private Preparation',
+  maintenanceMessage: 'Access to this public portal is temporarily paused while final domain linkage, security audits, and system configuration are being completed. Please check back soon or contact our offices below.',
+  maintenancePasscode: 'admin123',
 };
 
 export const initialImpactStats: ImpactStat[] = [

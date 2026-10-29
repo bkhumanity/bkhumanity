@@ -39,6 +39,9 @@ import {
   Search,
   Film,
   Play,
+  EyeOff,
+  Globe,
+  KeyRound,
 } from 'lucide-react';
 
 interface AdminViewProps {
@@ -99,6 +102,7 @@ export const AdminView: React.FC<AdminViewProps> = ({
       (emailInput === 'admin@bkhumanity.org' || emailInput === 'admin') &&
       passwordInput === 'admin123'
     ) {
+      sessionStorage.setItem('bkh_staff_preview_unlocked', 'true');
       setIsAuthenticated(true);
     } else {
       setLoginError('Invalid credentials. Use demo: admin@bkhumanity.org / admin123');
@@ -108,6 +112,7 @@ export const AdminView: React.FC<AdminViewProps> = ({
   const handleQuickDemoLogin = () => {
     setEmailInput('admin@bkhumanity.org');
     setPasswordInput('admin123');
+    sessionStorage.setItem('bkh_staff_preview_unlocked', 'true');
     setIsAuthenticated(true);
   };
 
@@ -821,6 +826,118 @@ export const AdminView: React.FC<AdminViewProps> = ({
                 <span>Site configuration and impact statistics updated successfully!</span>
               </div>
             )}
+
+            {/* Public Access & Maintenance Mode Controls */}
+            <div className="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200/80 shadow-xs space-y-5">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-4">
+                <div>
+                  <h3 className="text-base font-bold text-[#0F2942] font-display flex items-center gap-2">
+                    <Globe className="w-4 h-4 text-amber-500" />
+                    <span>Public Website Availability & Launch Control</span>
+                  </h3>
+                  <p className="text-xs text-slate-500 mt-0.5">
+                    Pause public access while you configure domains, test features, or prepare official launch.
+                  </p>
+                </div>
+                <div className={`px-3 py-1.5 rounded-full text-xs font-bold flex items-center gap-1.5 self-start sm:self-auto ${
+                  editSettings.isSitePaused
+                    ? 'bg-amber-100 text-amber-800 border border-amber-300'
+                    : 'bg-emerald-100 text-emerald-800 border border-emerald-300'
+                }`}>
+                  <span className={`w-2 h-2 rounded-full ${editSettings.isSitePaused ? 'bg-amber-500 animate-pulse' : 'bg-emerald-500'}`} />
+                  <span>{editSettings.isSitePaused ? 'PAUSED (Private Staging)' : 'LIVE (Public Access)'}</span>
+                </div>
+              </div>
+
+              {/* Status Toggle Cards */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <button
+                  type="button"
+                  onClick={() => setEditSettings({ ...editSettings, isSitePaused: true })}
+                  className={`p-4 rounded-xl border text-left transition-all cursor-pointer ${
+                    editSettings.isSitePaused
+                      ? 'border-amber-500 bg-amber-50/70 shadow-xs ring-2 ring-amber-400/20'
+                      : 'border-slate-200 bg-white hover:bg-slate-50'
+                  }`}
+                >
+                  <div className="flex items-center gap-2 font-bold text-sm text-[#0F2942]">
+                    <EyeOff className="w-4 h-4 text-amber-600" />
+                    <span>Pause Site (Private Staging)</span>
+                  </div>
+                  <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                    Recommended right now while finalizing the site. Public visitors cannot view pages or donate; they see the professional holding screen.
+                  </p>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setEditSettings({ ...editSettings, isSitePaused: false })}
+                  className={`p-4 rounded-xl border text-left transition-all cursor-pointer ${
+                    !editSettings.isSitePaused
+                      ? 'border-emerald-500 bg-emerald-50/70 shadow-xs ring-2 ring-emerald-400/20'
+                      : 'border-slate-200 bg-white hover:bg-slate-50'
+                  }`}
+                >
+                  <div className="flex items-center gap-2 font-bold text-sm text-[#0F2942]">
+                    <Globe className="w-4 h-4 text-emerald-600" />
+                    <span>Go Live (Publicly Active)</span>
+                  </div>
+                  <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                    Open the portal to the entire world. All pages, donation flows, and project details are viewable by anyone with the link or domain.
+                  </p>
+                </button>
+              </div>
+
+              {/* Holding Screen Message Settings */}
+              {editSettings.isSitePaused && (
+                <div className="p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-4">
+                  <h4 className="text-xs font-bold uppercase text-slate-700 tracking-wider">
+                    Holding Screen Configuration
+                  </h4>
+
+                  <div>
+                    <label className="block text-xs font-semibold text-slate-700 mb-1">
+                      Maintenance / Staging Headline
+                    </label>
+                    <input
+                      type="text"
+                      value={editSettings.maintenanceHeadline || ''}
+                      onChange={(e) => setEditSettings({ ...editSettings, maintenanceHeadline: e.target.value })}
+                      className="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg text-xs"
+                      placeholder="e.g. Official Portal Staging & Private Preparation"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold text-slate-700 mb-1">
+                      Public Notice Message
+                    </label>
+                    <textarea
+                      rows={3}
+                      value={editSettings.maintenanceMessage || ''}
+                      onChange={(e) => setEditSettings({ ...editSettings, maintenanceMessage: e.target.value })}
+                      className="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg text-xs"
+                      placeholder="Explain to visitors why the site is temporarily private..."
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold text-slate-700 mb-1">
+                      Staff Authorization Passcode (for preview bypass)
+                    </label>
+                    <input
+                      type="text"
+                      value={editSettings.maintenancePasscode || 'admin123'}
+                      onChange={(e) => setEditSettings({ ...editSettings, maintenancePasscode: e.target.value })}
+                      className="w-full max-w-xs px-3 py-2 bg-white border border-slate-300 rounded-lg text-xs font-mono font-bold"
+                    />
+                    <p className="text-[11px] text-slate-400 mt-1">
+                      Colleagues or reviewers can enter this passkey on the holding page to preview the site with your permission.
+                    </p>
+                  </div>
+                </div>
+              )}
+            </div>
 
             {/* Impact Stats Editor */}
             <div className="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200/80 shadow-xs space-y-4">

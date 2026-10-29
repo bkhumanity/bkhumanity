@@ -273,7 +273,15 @@ export function addNewsletterSubscriber(email: string): { success: boolean; mess
 
 // Site Settings
 export function getSiteSettings(): SiteSettings {
-  return getJSON<SiteSettings>(STORAGE_KEYS.SETTINGS, initialSiteSettings);
+  const saved = getJSON<SiteSettings>(STORAGE_KEYS.SETTINGS, initialSiteSettings);
+  return {
+    ...initialSiteSettings,
+    ...saved,
+    ghanaOffice: { ...initialSiteSettings.ghanaOffice, ...(saved.ghanaOffice || {}) },
+    usaOffice: { ...initialSiteSettings.usaOffice, ...(saved.usaOffice || {}) },
+    socialUrls: { ...initialSiteSettings.socialUrls, ...(saved.socialUrls || {}) },
+    isSitePaused: saved.isSitePaused !== undefined ? saved.isSitePaused : initialSiteSettings.isSitePaused,
+  };
 }
 
 export function updateSiteSettings(settings: SiteSettings): void {

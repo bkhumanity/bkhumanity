@@ -162,4 +162,8 @@ export interface SiteSettings {
     linkedin: string;
   };
   announcementNotice: string;
+  isSitePaused: boolean;
+  maintenanceHeadline: string;
+  maintenanceMessage: string;
+  maintenancePasscode: string;
 }
