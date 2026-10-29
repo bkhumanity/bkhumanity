@@ -9,6 +9,7 @@ import {
   getImpactStats,
   getTestimonials,
   getVideos,
+  getBlogPosts,
   subscribeToStore,
 } from './services/storage';
 import { initialGallery } from './data/mockData';
@@ -27,6 +28,8 @@ import { ProjectDetailView } from './views/ProjectDetailView';
 import { ImpactView } from './views/ImpactView';
 import { VolunteerView } from './views/VolunteerView';
 import { ContactView } from './views/ContactView';
+import { StoriesView } from './views/StoriesView';
+import { BlogView } from './views/BlogView';
 import { LegalView } from './views/LegalView';
 import { AdminView } from './views/AdminView';
 import { MaintenanceScreen } from './components/MaintenanceScreen';
@@ -60,6 +63,8 @@ export default function App() {
   const [stats, setStats] = useState(getImpactStats());
   const [testimonials, setTestimonials] = useState(getTestimonials());
   const [videos, setVideos] = useState(getVideos());
+  const [blogPosts, setBlogPosts] = useState(getBlogPosts());
+  const [selectedBlogSlug, setSelectedBlogSlug] = useState<string | undefined>(undefined);
   const [gallery] = useState(initialGallery);
 
   useEffect(() => {
@@ -73,6 +78,7 @@ export default function App() {
       setStats(getImpactStats());
       setTestimonials(getTestimonials());
       setVideos(getVideos());
+      setBlogPosts(getBlogPosts());
     });
     return unsubscribe;
   }, []);
@@ -82,10 +88,16 @@ export default function App() {
     setIsVideoModalOpen(true);
   };
 
-  const handleNavigate = (view: string, projId?: string) => {
+  const handleNavigate = (view: string, idOrSlug?: string) => {
     setCurrentView(view);
-    if (projId) {
-      setSelectedProjectId(projId);
+    if (view === 'project-detail' && idOrSlug) {
+      setSelectedProjectId(idOrSlug);
+    } else if (view === 'blog-detail') {
+      setSelectedBlogSlug(idOrSlug);
+    } else if (view === 'blog') {
+      setSelectedBlogSlug(idOrSlug || undefined);
+    } else if (idOrSlug) {
+      setSelectedProjectId(idOrSlug);
     }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -206,6 +218,29 @@ export default function App() {
         )}
 
         {currentView === 'contact' && <ContactView settings={settings} />}
+
+        {currentView === 'stories' && (
+          <StoriesView
+            testimonials={testimonials}
+            gallery={gallery}
+            videos={videos}
+            projects={projects}
+            onNavigate={handleNavigate}
+            onOpenDonateModal={handleOpenDonate}
+            onOpenLightbox={handleOpenLightbox}
+            onPlayVideo={handlePlayVideo}
+          />
+        )}
+
+        {(currentView === 'blog' || currentView === 'blog-detail') && (
+          <BlogView
+            posts={blogPosts}
+            selectedSlug={selectedBlogSlug}
+            projects={projects}
+            onNavigate={handleNavigate}
+            onOpenDonateModal={handleOpenDonate}
+          />
+        )}
 
         {currentView.startsWith('legal-') && (
           <LegalView initialTab={currentView.replace('legal-', '') as any} />

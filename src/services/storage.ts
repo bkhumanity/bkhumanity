@@ -9,6 +9,7 @@ import {
   NewsletterSubscriber,
   SiteSettings,
   FieldVideo,
+  BlogPost,
 } from '../types';
 import {
   initialProjects,
@@ -17,6 +18,7 @@ import {
   initialDonations,
   initialSiteSettings,
   initialVideos,
+  initialBlogPosts,
 } from '../data/mockData';
 
 const STORAGE_KEYS = {
@@ -30,6 +32,7 @@ const STORAGE_KEYS = {
   STATS: 'bk_stats_v1',
   TESTIMONIALS: 'bk_testimonials_v1',
   VIDEOS: 'bk_videos_v1',
+  BLOG_POSTS: 'bk_blog_posts_v3',
 };
 
 type Listener = () => void;
@@ -342,6 +345,74 @@ export function deleteVideo(id: string): void {
   setJSON(STORAGE_KEYS.VIDEOS, current);
 }
 
+// Blog Posts
+const LEGACY_AUTHOR_MAP: Record<string, { name: string; role: string; location: string }> = {
+  'Ing. Michael Addo': {
+    name: 'BK Humanity Water & Sanitation Desk',
+    role: 'Official Field Engineering Publication',
+    location: 'Tamale & Accra, Ghana',
+  },
+  'Grace Serwaa Boateng': {
+    name: 'BK Humanity Education & Gender Desk',
+    role: 'Official Foundation Publication',
+    location: 'Accra & Kumasi, Ghana',
+  },
+  'Kwabena Osei-Tutu': {
+    name: 'BK Construction Technical Training Desk',
+    role: 'Vocational Academy Publication',
+    location: 'Amasaman, Greater Accra',
+  },
+  'Ebenezer Quaye': {
+    name: 'BK Humanity Finance & Audit Committee',
+    role: 'Official Governance & Audit Publication',
+    location: 'Accra, Ghana',
+  },
+  'Patricia Mensah': {
+    name: 'BK Humanity Community Liaison Desk',
+    role: 'Official Field Reporting Publication',
+    location: 'Volta & Eastern Regions, Ghana',
+  },
+};
+
+export function getBlogPosts(): BlogPost[] {
+  const loaded = getJSON<BlogPost[]>(STORAGE_KEYS.BLOG_POSTS, initialBlogPosts);
+  return loaded.map((post) => {
+    let author = post.author;
+    if (author && LEGACY_AUTHOR_MAP[author.name]) {
+      author = {
+        ...author,
+        ...LEGACY_AUTHOR_MAP[author.name],
+      };
+    }
+    return {
+      ...post,
+      author,
+      imageUrl: sanitizeImagePath(post.imageUrl),
+    };
+  });
+}
+
+export function getBlogPostBySlug(slug: string): BlogPost | undefined {
+  const posts = getBlogPosts();
+  return posts.find((p) => p.slug === slug || p.id === slug);
+}
+
+export function saveBlogPost(post: BlogPost): void {
+  const current = getBlogPosts();
+  const index = current.findIndex((p) => p.id === post.id);
+  if (index >= 0) {
+    current[index] = post;
+  } else {
+    current.unshift(post);
+  }
+  setJSON(STORAGE_KEYS.BLOG_POSTS, current);
+}
+
+export function deleteBlogPost(id: string): void {
+  const current = getBlogPosts().filter((p) => p.id !== id);
+  setJSON(STORAGE_KEYS.BLOG_POSTS, current);
+}
+
 // Reset all store data to defaults (for testing in Admin)
 export function resetStoreToDefaults(): void {
   localStorage.removeItem(STORAGE_KEYS.PROJECTS);
@@ -354,5 +425,6 @@ export function resetStoreToDefaults(): void {
   localStorage.removeItem(STORAGE_KEYS.STATS);
   localStorage.removeItem(STORAGE_KEYS.TESTIMONIALS);
   localStorage.removeItem(STORAGE_KEYS.VIDEOS);
+  localStorage.removeItem(STORAGE_KEYS.BLOG_POSTS);
   notify();
 }

@@ -167,3 +167,35 @@ export interface SiteSettings {
   maintenanceMessage: string;
   maintenancePasscode: string;
 }
+
+export interface BlogPost {
+  id: string;
+  slug: string;
+  title: string;
+  seoTitle: string;
+  metaDescription: string;
+  excerpt: string;
+  content: string; // Markdown formatted article body
+  category:
+    | 'Clean Water'
+    | 'Construction Training'
+    | 'Girl Child Education'
+    | 'Transparency'
+    | 'Community Stories'
+    | 'Building & Construction'
+    | 'Real Estate & Housing'
+    | 'Careers & NGO';
+  pillar?: PillarType;
+  author: {
+    name: string;
+    role: string;
+    location: string;
+    avatarUrl?: string;
+  };
+  publishedAt: string;
+  readTimeMinutes: number;
+  imageUrl: string;
+  tags: string[];
+  featured?: boolean;
+  relatedProjectId?: string;
+}

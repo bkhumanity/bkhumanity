@@ -29,6 +29,8 @@ export const Navbar: React.FC<NavbarProps> = ({
     { id: 'about', label: 'About' },
     { id: 'projects', label: 'Projects' },
     { id: 'impact', label: 'Our Impact' },
+    { id: 'stories', label: 'Stories' },
+    { id: 'blog', label: 'Blog' },
     { id: 'volunteer', label: 'Get Involved' },
     { id: 'contact', label: 'Contact' },
   ];
@@ -60,7 +62,9 @@ export const Navbar: React.FC<NavbarProps> = ({
             {/* Zone 2: Navigation Links (Desktop) */}
             <nav className="hidden lg:flex items-center gap-7 text-sm font-semibold text-slate-700">
               {navLinks.map((link) => {
-                const isActive = currentView === link.id;
+                const isActive =
+                  currentView === link.id ||
+                  (link.id === 'blog' && currentView.startsWith('blog'));
                 return (
                   <button
                     key={link.id}
@@ -127,7 +131,9 @@ export const Navbar: React.FC<NavbarProps> = ({
           <div className="lg:hidden bg-white border-b border-slate-200 px-4 pt-3 pb-6 shadow-xl animate-in slide-in-from-top-2 duration-200">
             <div className="flex flex-col space-y-2">
               {navLinks.map((link) => {
-                const isActive = currentView === link.id;
+                const isActive =
+                  currentView === link.id ||
+                  (link.id === 'blog' && currentView.startsWith('blog'));
                 return (
                   <button
                     key={link.id}

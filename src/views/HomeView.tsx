@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Project, ImpactStat, Testimonial, GalleryItem, FieldVideo } from '../types';
-import { addNewsletterSubscriber } from '../services/storage';
+import { addNewsletterSubscriber, getBlogPosts } from '../services/storage';
 import { FAQs } from '../components/FAQs';
 import { VideoSection } from '../components/VideoSection';
 import {
@@ -16,6 +16,8 @@ import {
   HandHeart,
   Building2,
   Sparkles,
+  BookOpen,
+  Clock,
 } from 'lucide-react';
 
 interface HomeViewProps {
@@ -45,6 +47,10 @@ export const HomeView: React.FC<HomeViewProps> = ({
   const [searchQuery, setSearchQuery] = useState('');
   const [newsletterEmail, setNewsletterEmail] = useState('');
   const [newsletterMsg, setNewsletterMsg] = useState<{ success: boolean; text: string } | null>(null);
+
+  const latestArticles = useMemo(() => {
+    return getBlogPosts().slice(0, 3);
+  }, []);
 
   const filteredProjects = projects.filter((p) => {
     const matchesCategory = selectedCategory === 'All' || p.category === selectedCategory;
@@ -702,6 +708,80 @@ export const HomeView: React.FC<HomeViewProps> = ({
               Sponsor Today
             </button>
           </div>
+        </div>
+      </section>
+
+      {/* =========================================================================
+          SECTION I.2: FIELD STORIES & EDUCATIONAL DISPATCHES
+      ========================================================================= */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10 pb-4 border-b border-slate-200/80">
+          <div className="space-y-2">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold uppercase tracking-wider">
+              <BookOpen className="w-3.5 h-3.5" />
+              <span>Field Reports & Stories</span>
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-[#0F2942] font-display">
+              Stories of Impact & Educational Dispatches
+            </h2>
+            <p className="text-xs sm:text-sm text-slate-500 max-w-xl">
+              In-depth articles from our hydrologists, vocational instructors, and education coordinators on the ground in Ghana.
+            </p>
+          </div>
+
+          <button
+            onClick={() => onNavigate('blog')}
+            className="inline-flex items-center gap-2 text-xs font-bold text-emerald-700 hover:text-emerald-800 transition-colors shrink-0 cursor-pointer self-start sm:self-auto"
+          >
+            <span>Explore All Stories</span>
+            <ArrowRight className="w-4 h-4" />
+          </button>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {latestArticles.map((article) => (
+            <article
+              key={article.id}
+              onClick={() => onNavigate('blog-detail', article.slug)}
+              className="bg-white rounded-2xl border border-slate-200/90 overflow-hidden shadow-2xs hover:shadow-lg transition-all duration-300 flex flex-col group cursor-pointer"
+            >
+              <div className="h-48 overflow-hidden relative bg-slate-100">
+                <img
+                  src={article.imageUrl}
+                  alt={article.title}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+                <span className="absolute top-3 left-3 px-2.5 py-0.5 bg-[#0F2942]/90 backdrop-blur-xs text-white text-[10px] font-bold rounded">
+                  {article.category}
+                </span>
+              </div>
+              <div className="p-6 flex-1 flex flex-col justify-between">
+                <div>
+                  <div className="flex items-center gap-2 text-xs text-slate-500 mb-2">
+                    <Clock className="w-3.5 h-3.5 text-slate-400" />
+                    <span>{article.readTimeMinutes} min read</span>
+                    <span>&bull;</span>
+                    <span>{article.publishedAt}</span>
+                  </div>
+                  <h3 className="text-base font-bold text-[#0F2942] group-hover:text-emerald-700 transition-colors leading-snug line-clamp-2 mb-2">
+                    {article.title}
+                  </h3>
+                  <p className="text-xs text-slate-600 line-clamp-3 leading-relaxed mb-4">
+                    {article.excerpt}
+                  </p>
+                </div>
+                <div className="pt-4 border-t border-slate-100 flex items-center justify-between">
+                  <span className="text-xs font-semibold text-slate-700 truncate max-w-[150px]">
+                    {article.author.name}
+                  </span>
+                  <span className="text-xs font-bold text-emerald-700 inline-flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                    <span>Read Full Story</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </span>
+                </div>
+              </div>
+            </article>
+          ))}
         </div>
       </section>
 
