@@ -1,6 +1,6 @@
 {
   "name": "BK Construction - Humanity For Habitat NGO",
-  "description": "Official website for BK Construction - Humanity For Habitat NGO. Providing clean water, vocational construction training, and girl child education in Ghana and the United States.",
+  "description": "BK Construction Humanity For Habitat NGO empowers communities in Ghana with clean water boreholes, vocational construction apprenticeships, and girl-child education sponsorships.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }
