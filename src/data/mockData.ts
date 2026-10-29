@@ -1,4 +1,4 @@
-import { Project, ImpactStat, Testimonial, GalleryItem, SiteSettings, Donation } from '../types';
+import { Project, ImpactStat, Testimonial, GalleryItem, SiteSettings, Donation, FieldVideo } from '../types';
 
 export const initialSiteSettings: SiteSettings = {
   orgName: 'BK CONSTRUCTION',
@@ -387,5 +387,60 @@ export const initialDonations: Donation[] = [
     paymentMethod: 'Card',
     status: 'Verified',
     createdAt: '2026-03-28T09:05:00Z',
+  }
+];
+
+export const initialVideos: FieldVideo[] = [
+  {
+    id: 'vid-1',
+    title: 'Drilling Clean Water Boreholes in Adaklu Community',
+    description: 'Watch the heavy geological rotary rig drill through subterranean aquifer layers to deliver clean, potable drinking water for 2,800 villagers.',
+    category: 'Clean Water',
+    pillar: 'water',
+    videoUrl: 'https://www.youtube.com/watch?v=kXx3t5wA4_M',
+    thumbnailUrl: '/images/hero_african_water_well_1793198749440.jpg',
+    duration: '3:45',
+    location: 'Adaklu Kpetoe, Volta Region',
+    date: 'March 2026',
+    featured: true,
+  },
+  {
+    id: 'vid-2',
+    title: 'Youth Vocational Construction & Masonry Academy in Action',
+    description: 'A behind-the-scenes look at our hands-on vocational workshops in Amasaman, where young apprentices learn masonry, bricklaying, and site safety.',
+    category: 'Construction Training',
+    pillar: 'construction',
+    videoUrl: 'https://www.youtube.com/watch?v=ScMzIvxBSi4',
+    thumbnailUrl: '/images/project_construction_training_1793198750855.jpg',
+    duration: '4:12',
+    location: 'Amasaman, Greater Accra',
+    date: 'February 2026',
+    featured: true,
+  },
+  {
+    id: 'vid-3',
+    title: 'Brighter Futures: Girl-Child Education Scholarships',
+    description: 'Interviews with scholarship recipients in Savelugu as they receive textbooks, learning supplies, and STEM mentorship to continue their education.',
+    category: 'Girl Child Education',
+    pillar: 'education',
+    videoUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+    thumbnailUrl: '/images/project_girl_child_education_1793198758731.jpg',
+    duration: '2:50',
+    location: 'Savelugu, Northern Region',
+    date: 'March 2026',
+    featured: true,
+  },
+  {
+    id: 'vid-4',
+    title: 'Solar-Powered High-Pressure Water Station Commissioning',
+    description: 'Celebrations and testimonies from community elders as solar panels power an overhead 15,000L header tank serving five distribution stands.',
+    category: 'Clean Water',
+    pillar: 'water',
+    videoUrl: 'https://www.youtube.com/watch?v=kXx3t5wA4_M',
+    thumbnailUrl: '/images/community_borehole_celebration_1793198752184.jpg',
+    duration: '5:10',
+    location: 'Kwahu South District, Eastern Region',
+    date: 'April 2026',
+    featured: false,
   }
 ];

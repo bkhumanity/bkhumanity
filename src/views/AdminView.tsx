@@ -7,6 +7,7 @@ import {
   ContactMessage,
   SiteSettings,
   ImpactStat,
+  FieldVideo,
 } from '../types';
 import {
   saveProject,
@@ -15,6 +16,8 @@ import {
   updateSiteSettings,
   updateImpactStats,
   resetStoreToDefaults,
+  saveVideo,
+  deleteVideo,
 } from '../services/storage';
 import {
   ShieldCheck,
@@ -34,6 +37,8 @@ import {
   Eye,
   RefreshCw,
   Search,
+  Film,
+  Play,
 } from 'lucide-react';
 
 interface AdminViewProps {
@@ -44,7 +49,9 @@ interface AdminViewProps {
   messages: ContactMessage[];
   settings: SiteSettings;
   stats: ImpactStat[];
+  videos: FieldVideo[];
   onNavigate: (view: string) => void;
+  onPlayVideo?: (video: FieldVideo) => void;
 }
 
 export const AdminView: React.FC<AdminViewProps> = ({
@@ -55,7 +62,9 @@ export const AdminView: React.FC<AdminViewProps> = ({
   messages,
   settings,
   stats,
+  videos,
   onNavigate,
+  onPlayVideo,
 }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [emailInput, setEmailInput] = useState('');
@@ -63,11 +72,15 @@ export const AdminView: React.FC<AdminViewProps> = ({
   const [loginError, setLoginError] = useState('');
 
   // Active admin tab
-  const [adminTab, setAdminTab] = useState<'overview' | 'projects' | 'donations' | 'volunteers' | 'inquiries' | 'settings'>('overview');
+  const [adminTab, setAdminTab] = useState<'overview' | 'projects' | 'donations' | 'volunteers' | 'inquiries' | 'settings' | 'videos'>('overview');
 
   // Project modal state
   const [editingProject, setEditingProject] = useState<Partial<Project> | null>(null);
   const [isProjectModalOpen, setIsProjectModalOpen] = useState(false);
+
+  // Video modal state
+  const [isAddVideoModalOpen, setIsAddVideoModalOpen] = useState(false);
+  const [editingVideo, setEditingVideo] = useState<Partial<FieldVideo> | null>(null);
 
   // Settings form state
   const [editSettings, setEditSettings] = useState<SiteSettings>(settings);
@@ -186,6 +199,57 @@ export const AdminView: React.FC<AdminViewProps> = ({
   const handleDeleteProject = (id: string, title: string) => {
     if (window.confirm(`Are you sure you want to permanently delete project: "${title}"? This action cannot be undone.`)) {
       deleteProject(id);
+    }
+  };
+
+  // Video management handlers
+  const handleOpenAddVideo = () => {
+    setEditingVideo({
+      id: '',
+      title: '',
+      description: '',
+      category: 'Clean Water',
+      pillar: 'water',
+      videoUrl: '',
+      thumbnailUrl: '/images/hero_african_water_well_1793198749440.jpg',
+      duration: '3:30',
+      location: 'Adaklu, Volta Region',
+      date: new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' }),
+    });
+    setIsAddVideoModalOpen(true);
+  };
+
+  const handleEditVideo = (v: FieldVideo) => {
+    setEditingVideo({ ...v });
+    setIsAddVideoModalOpen(true);
+  };
+
+  const handleSaveVideoForm = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingVideo || !editingVideo.title || !editingVideo.videoUrl) return;
+    const cat = editingVideo.category || 'Clean Water';
+    const pillar = cat === 'Clean Water' ? 'water' : cat === 'Construction Training' ? 'construction' : 'education';
+    const videoToSave: FieldVideo = {
+      id: editingVideo.id || `vid-${Date.now()}`,
+      title: editingVideo.title,
+      description: editingVideo.description || '',
+      category: cat,
+      pillar,
+      videoUrl: editingVideo.videoUrl,
+      thumbnailUrl: editingVideo.thumbnailUrl || '/images/hero_african_water_well_1793198749440.jpg',
+      duration: editingVideo.duration || '3:30',
+      location: editingVideo.location || 'Ghana',
+      date: editingVideo.date || 'April 2026',
+      featured: editingVideo.featured || false,
+    };
+    saveVideo(videoToSave);
+    setIsAddVideoModalOpen(false);
+    setEditingVideo(null);
+  };
+
+  const handleDeleteVideo = (id: string, title: string) => {
+    if (window.confirm(`Are you sure you want to delete video: "${title}"?`)) {
+      deleteVideo(id);
     }
   };
 
@@ -334,6 +398,7 @@ export const AdminView: React.FC<AdminViewProps> = ({
             { id: 'donations', label: `Donations (${donations.length})`, icon: Heart },
             { id: 'volunteers', label: `Volunteers (${volunteers.length})`, icon: Users },
             { id: 'inquiries', label: `Messages (${messages.length})`, icon: MessageSquare },
+            { id: 'videos', label: `Field Videos (${videos.length})`, icon: Film },
             { id: 'settings', label: 'Site Settings & Stats', icon: Settings },
           ].map((tab) => {
             const Icon = tab.icon;
@@ -908,7 +973,242 @@ export const AdminView: React.FC<AdminViewProps> = ({
             </div>
           </form>
         )}
+
+        {/* =========================================================================
+            TAB 7: FIELD VIDEOS MANAGEMENT
+        ========================================================================= */}
+        {adminTab === 'videos' && (
+          <div className="space-y-6">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-6 rounded-2xl border border-slate-200/80 shadow-xs">
+              <div>
+                <h3 className="text-base font-bold text-[#0F2942] font-display">
+                  Field Impact Videos ({videos.length})
+                </h3>
+                <p className="text-xs text-slate-500 mt-1">
+                  Manage documentary videos from YouTube, Vimeo, or direct MP4 links shown across the homepage and impact page.
+                </p>
+              </div>
+
+              <button
+                onClick={handleOpenAddVideo}
+                className="py-2.5 px-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-xs transition-colors flex items-center gap-1.5 cursor-pointer shrink-0"
+              >
+                <Plus className="w-4 h-4" />
+                <span>Add New Video</span>
+              </button>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {videos.map((vid) => (
+                <div
+                  key={vid.id}
+                  className="bg-white rounded-2xl border border-slate-200/80 overflow-hidden shadow-xs hover:shadow-md transition-shadow flex flex-col justify-between"
+                >
+                  <div>
+                    <div className="relative aspect-video bg-slate-900 overflow-hidden">
+                      <img
+                        src={vid.thumbnailUrl}
+                        alt={vid.title}
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).src = '/images/hero-community.png';
+                        }}
+                      />
+                      <div className="absolute inset-0 bg-slate-950/40 flex items-center justify-center">
+                        <button
+                          onClick={() => onPlayVideo ? onPlayVideo(vid) : window.open(vid.videoUrl, '_blank')}
+                          className="w-12 h-12 rounded-full bg-emerald-600/90 text-white flex items-center justify-center hover:bg-emerald-500 hover:scale-110 transition-all cursor-pointer shadow-lg"
+                          title="Preview video"
+                        >
+                          <Play className="w-5 h-5 fill-white translate-x-0.5" />
+                        </button>
+                      </div>
+                      {vid.duration && (
+                        <span className="absolute bottom-2 right-2 bg-slate-900/90 text-white text-[11px] font-mono px-2 py-0.5 rounded">
+                          {vid.duration}
+                        </span>
+                      )}
+                      <span className="absolute top-2 left-2 bg-emerald-600/90 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
+                        {vid.category}
+                      </span>
+                    </div>
+
+                    <div className="p-4 space-y-2">
+                      <h4 className="text-sm font-bold text-[#0F2942] line-clamp-1">
+                        {vid.title}
+                      </h4>
+                      <p className="text-xs text-slate-500 line-clamp-2 leading-relaxed">
+                        {vid.description}
+                      </p>
+                      <div className="text-[11px] text-slate-400 flex items-center justify-between pt-1">
+                        <span>📍 {vid.location}</span>
+                        <span>🗓 {vid.date}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="p-3 bg-slate-50 border-t border-slate-100 flex items-center justify-between">
+                    <button
+                      onClick={() => handleEditVideo(vid)}
+                      className="px-3 py-1.5 text-xs font-semibold text-slate-700 hover:text-emerald-700 hover:bg-slate-200/60 rounded-lg transition-colors flex items-center gap-1 cursor-pointer"
+                    >
+                      <Edit2 className="w-3.5 h-3.5" />
+                      <span>Edit</span>
+                    </button>
+                    <button
+                      onClick={() => handleDeleteVideo(vid.id, vid.title)}
+                      className="px-3 py-1.5 text-xs font-semibold text-rose-600 hover:bg-rose-50 rounded-lg transition-colors flex items-center gap-1 cursor-pointer"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                      <span>Delete</span>
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </section>
+
+      {/* Edit/Create Video Modal */}
+      {isAddVideoModalOpen && editingVideo && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs overflow-y-auto">
+          <div className="relative w-full max-w-lg bg-white rounded-2xl shadow-2xl p-6 sm:p-8 space-y-4 my-8">
+            <h3 className="text-xl font-bold text-[#0F2942] font-display">
+              {editingVideo.id ? 'Edit Field Video' : 'Add New Field Video'}
+            </h3>
+            <p className="text-xs text-slate-500">
+              Add YouTube, Vimeo, or direct MP4 links from field missions, borehole drills, and student ceremonies.
+            </p>
+
+            <form onSubmit={handleSaveVideoForm} className="space-y-3.5 text-xs">
+              <div>
+                <label className="block font-semibold text-slate-700 mb-1">Video Title</label>
+                <input
+                  type="text"
+                  required
+                  placeholder="e.g. Borehole Commissioning & Clean Water Flow in Adaklu"
+                  value={editingVideo.title || ''}
+                  onChange={(e) => setEditingVideo({ ...editingVideo, title: e.target.value })}
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-xs"
+                />
+              </div>
+
+              <div>
+                <label className="block font-semibold text-slate-700 mb-1">
+                  Video URL (YouTube, Vimeo, or MP4)
+                </label>
+                <input
+                  type="url"
+                  required
+                  placeholder="https://www.youtube.com/watch?v=... or https://youtu.be/..."
+                  value={editingVideo.videoUrl || ''}
+                  onChange={(e) => setEditingVideo({ ...editingVideo, videoUrl: e.target.value })}
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-xs font-mono"
+                />
+                <span className="text-[10px] text-slate-400 mt-1 block">
+                  Supports standard YouTube watch links, short links (youtu.be), Vimeo, or direct .mp4 files.
+                </span>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block font-semibold text-slate-700 mb-1">Category / Pillar</label>
+                  <select
+                    value={editingVideo.category || 'Clean Water'}
+                    onChange={(e) => {
+                      const cat = e.target.value as any;
+                      const pillar = cat === 'Clean Water' ? 'water' : cat === 'Construction Training' ? 'construction' : 'education';
+                      setEditingVideo({ ...editingVideo, category: cat, pillar });
+                    }}
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-xs"
+                  >
+                    <option value="Clean Water">Clean Water</option>
+                    <option value="Construction Training">Construction Training</option>
+                    <option value="Girl Child Education">Girl Child Education</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block font-semibold text-slate-700 mb-1">Duration</label>
+                  <input
+                    type="text"
+                    placeholder="3:45"
+                    value={editingVideo.duration || ''}
+                    onChange={(e) => setEditingVideo({ ...editingVideo, duration: e.target.value })}
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-xs"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block font-semibold text-slate-700 mb-1">Location</label>
+                  <input
+                    type="text"
+                    placeholder="e.g. Volta Region, Ghana"
+                    value={editingVideo.location || ''}
+                    onChange={(e) => setEditingVideo({ ...editingVideo, location: e.target.value })}
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-xs"
+                  />
+                </div>
+
+                <div>
+                  <label className="block font-semibold text-slate-700 mb-1">Date</label>
+                  <input
+                    type="text"
+                    placeholder="April 2026"
+                    value={editingVideo.date || ''}
+                    onChange={(e) => setEditingVideo({ ...editingVideo, date: e.target.value })}
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-xs"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block font-semibold text-slate-700 mb-1">Thumbnail Image URL</label>
+                <input
+                  type="text"
+                  placeholder="/images/hero_african_water_well_1793198749440.jpg"
+                  value={editingVideo.thumbnailUrl || ''}
+                  onChange={(e) => setEditingVideo({ ...editingVideo, thumbnailUrl: e.target.value })}
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-xs font-mono"
+                />
+              </div>
+
+              <div>
+                <label className="block font-semibold text-slate-700 mb-1">Description / Summary</label>
+                <textarea
+                  rows={2}
+                  placeholder="Short description of the event or community transformation captured in this footage..."
+                  value={editingVideo.description || ''}
+                  onChange={(e) => setEditingVideo({ ...editingVideo, description: e.target.value })}
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-xs"
+                />
+              </div>
+
+              <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-200">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsAddVideoModalOpen(false);
+                    setEditingVideo(null);
+                  }}
+                  className="px-4 py-2 border border-slate-300 text-slate-700 rounded-lg font-bold"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-5 py-2 bg-emerald-600 text-white rounded-lg font-bold"
+                >
+                  Save Video
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
 
       {/* Edit/Create Project Modal */}
       {isProjectModalOpen && editingProject && (

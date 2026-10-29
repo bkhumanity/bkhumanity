@@ -8,13 +8,16 @@ import {
   getSiteSettings,
   getImpactStats,
   getTestimonials,
+  getVideos,
   subscribeToStore,
 } from './services/storage';
 import { initialGallery } from './data/mockData';
+import { FieldVideo } from './types';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
 import { DonationModal } from './components/DonationModal';
 import { ImageLightbox } from './components/ImageLightbox';
+import { VideoModal } from './components/VideoModal';
 import { FloatingWhatsApp } from './components/FloatingWhatsApp';
 
 import { HomeView } from './views/HomeView';
@@ -37,6 +40,10 @@ export default function App() {
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
 
+  // Video player modal
+  const [selectedVideo, setSelectedVideo] = useState<FieldVideo | null>(null);
+  const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
+
   // Store data
   const [projects, setProjects] = useState(getProjects());
   const [donations, setDonations] = useState(getDonations());
@@ -46,6 +53,7 @@ export default function App() {
   const [settings, setSettings] = useState(getSiteSettings());
   const [stats, setStats] = useState(getImpactStats());
   const [testimonials, setTestimonials] = useState(getTestimonials());
+  const [videos, setVideos] = useState(getVideos());
   const [gallery] = useState(initialGallery);
 
   useEffect(() => {
@@ -58,9 +66,15 @@ export default function App() {
       setSettings(getSiteSettings());
       setStats(getImpactStats());
       setTestimonials(getTestimonials());
+      setVideos(getVideos());
     });
     return unsubscribe;
   }, []);
+
+  const handlePlayVideo = (video: FieldVideo) => {
+    setSelectedVideo(video);
+    setIsVideoModalOpen(true);
+  };
 
   const handleNavigate = (view: string, projId?: string) => {
     setCurrentView(view);
@@ -100,9 +114,11 @@ export default function App() {
             stats={stats}
             testimonials={testimonials}
             gallery={gallery}
+            videos={videos}
             onNavigate={handleNavigate}
             onOpenDonateModal={handleOpenDonate}
             onOpenLightbox={handleOpenLightbox}
+            onPlayVideo={handlePlayVideo}
           />
         )}
 
@@ -159,7 +175,9 @@ export default function App() {
             messages={messages}
             settings={settings}
             stats={stats}
+            videos={videos}
             onNavigate={handleNavigate}
+            onPlayVideo={handlePlayVideo}
           />
         )}
       </main>
@@ -187,6 +205,13 @@ export default function App() {
         currentIndex={lightboxIndex}
         onNext={() => setLightboxIndex((prev) => (prev + 1) % gallery.length)}
         onPrev={() => setLightboxIndex((prev) => (prev - 1 + gallery.length) % gallery.length)}
+      />
+
+      {/* Video Modal Player */}
+      <VideoModal
+        video={selectedVideo}
+        isOpen={isVideoModalOpen}
+        onClose={() => setIsVideoModalOpen(false)}
       />
 
       {/* Floating WhatsApp Contact Button */}

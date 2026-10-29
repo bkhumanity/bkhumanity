@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Project, ImpactStat, Testimonial, GalleryItem } from '../types';
+import { Project, ImpactStat, Testimonial, GalleryItem, FieldVideo } from '../types';
 import { addNewsletterSubscriber } from '../services/storage';
 import { FAQs } from '../components/FAQs';
+import { VideoSection } from '../components/VideoSection';
 import {
   Droplets,
   HardHat,
@@ -22,9 +23,11 @@ interface HomeViewProps {
   stats: ImpactStat[];
   testimonials: Testimonial[];
   gallery: GalleryItem[];
+  videos: FieldVideo[];
   onNavigate: (view: string, projectId?: string) => void;
   onOpenDonateModal: (projectId?: string) => void;
   onOpenLightbox: (index: number) => void;
+  onPlayVideo: (video: FieldVideo) => void;
 }
 
 export const HomeView: React.FC<HomeViewProps> = ({
@@ -32,9 +35,11 @@ export const HomeView: React.FC<HomeViewProps> = ({
   stats,
   testimonials,
   gallery,
+  videos,
   onNavigate,
   onOpenDonateModal,
   onOpenLightbox,
+  onPlayVideo,
 }) => {
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [searchQuery, setSearchQuery] = useState('');
@@ -589,6 +594,11 @@ export const HomeView: React.FC<HomeViewProps> = ({
           ))}
         </div>
       </section>
+
+      {/* =========================================================================
+          FIELD VIDEOS SECTION (Impact in Motion)
+      ========================================================================= */}
+      <VideoSection videos={videos} onPlayVideo={onPlayVideo} />
 
       {/* =========================================================================
           FAQS SECTION (Frequently Asked Questions)

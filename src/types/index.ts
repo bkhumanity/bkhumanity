@@ -56,6 +56,20 @@ export interface GalleryItem {
   comparisonNote?: string;
 }
 
+export interface FieldVideo {
+  id: string;
+  title: string;
+  description: string;
+  category: 'Clean Water' | 'Construction Training' | 'Girl Child Education';
+  pillar: PillarType;
+  videoUrl: string;
+  thumbnailUrl: string;
+  duration?: string;
+  location: string;
+  date: string;
+  featured?: boolean;
+}
+
 export interface Donation {
   id: string;
   referenceNumber: string;

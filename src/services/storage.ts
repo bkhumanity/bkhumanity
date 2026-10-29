@@ -8,6 +8,7 @@ import {
   ContactMessage,
   NewsletterSubscriber,
   SiteSettings,
+  FieldVideo,
 } from '../types';
 import {
   initialProjects,
@@ -15,6 +16,7 @@ import {
   initialTestimonials,
   initialDonations,
   initialSiteSettings,
+  initialVideos,
 } from '../data/mockData';
 
 const STORAGE_KEYS = {
@@ -27,6 +29,7 @@ const STORAGE_KEYS = {
   SETTINGS: 'bk_settings_v1',
   STATS: 'bk_stats_v1',
   TESTIMONIALS: 'bk_testimonials_v1',
+  VIDEOS: 'bk_videos_v1',
 };
 
 type Listener = () => void;
@@ -307,6 +310,27 @@ export function deleteTestimonial(id: string): void {
   setJSON(STORAGE_KEYS.TESTIMONIALS, current);
 }
 
+// Videos
+export function getVideos(): FieldVideo[] {
+  return getJSON<FieldVideo[]>(STORAGE_KEYS.VIDEOS, initialVideos);
+}
+
+export function saveVideo(video: FieldVideo): void {
+  const current = getVideos();
+  const index = current.findIndex((v) => v.id === video.id);
+  if (index >= 0) {
+    current[index] = video;
+  } else {
+    current.unshift(video);
+  }
+  setJSON(STORAGE_KEYS.VIDEOS, current);
+}
+
+export function deleteVideo(id: string): void {
+  const current = getVideos().filter((v) => v.id !== id);
+  setJSON(STORAGE_KEYS.VIDEOS, current);
+}
+
 // Reset all store data to defaults (for testing in Admin)
 export function resetStoreToDefaults(): void {
   localStorage.removeItem(STORAGE_KEYS.PROJECTS);
@@ -318,5 +342,6 @@ export function resetStoreToDefaults(): void {
   localStorage.removeItem(STORAGE_KEYS.SETTINGS);
   localStorage.removeItem(STORAGE_KEYS.STATS);
   localStorage.removeItem(STORAGE_KEYS.TESTIMONIALS);
+  localStorage.removeItem(STORAGE_KEYS.VIDEOS);
   notify();
 }

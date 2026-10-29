@@ -1,0 +1,5 @@
+{
+  "summary":  "A complete, educator-ready masterclass guide and technical post-mortem documenting all real-world struggles, log breakdowns, and step-by-step solutions for deploying a modern React 19 + Vite 8 + TypeScript Single Page Application (SPA) to Vercel, including npm ERESOLVE peer dependency resolution, vercel.json routing rewrites, and Vercel UI navigation.",
+  "updatedAt":  "2026-10-29T08:20:35.519042003Z",
+  "userFacing":  true
+}
