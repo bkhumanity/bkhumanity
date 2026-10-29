@@ -1,0 +1,755 @@
+# MASTER PROMPT: BUILD A PROFESSIONAL, FULLY RESPONSIVE CHARITY NGO WEBSITE
+
+Act as a senior full-stack web developer, UI/UX designer, and charity website specialist. Build a complete, professional, modern, responsive, and functional charity NGO website inspired by the reference image I provided.
+
+The website is for **BK CONSTRUCTION — HUMANITY FOR HABITAT NGO**.
+
+The NGO focuses on three main humanitarian pillars:
+1. Clean Water and Borehole Projects.
+2. Construction Skills Training and Youth Empowerment.
+3. Girl Child Education and Scholarships.
+
+The website must look trustworthy, attractive, emotional, professional, and suitable for an international charity operating in Ghana and the United States.
+
+**IMPORTANT:** Do not just create a static design, mockup, or landing page. Build a working website with functional navigation, donation workflows, project pages, contact forms, mobile responsiveness, and all essential features. I want to test the website immediately in Google AI Studio.
+
+## 1. TECHNOLOGY AND DEVELOPMENT REQUIREMENTS
+
+Use a modern, reliable technology stack suitable for a professional website.
+
+- React with TypeScript.
+- Modern CSS or Tailwind CSS.
+- Reusable components and a clean project structure.
+- Responsive layouts for mobile, tablet, laptop, and desktop.
+- Use Lucide icons or an equivalent consistent icon library.
+- Use high-quality, relevant photographs showing African communities, children receiving education, clean water projects, volunteers, and construction training.
+- Use accessible HTML, semantic structure, and SEO-friendly page content.
+- Use reliable form validation and clear error messages.
+- Use environment variables for secret keys.
+- Avoid unnecessary dependencies and broken external integrations.
+
+If a backend or database is needed, implement a suitable integration or clearly identify the configuration required. Do not pretend that an unconnected feature is functional.
+
+## 2. DESIGN AND BRAND IDENTITY
+
+Follow the reference image closely while improving the overall design quality.
+
+### Brand identity
+- Organization name: BK CONSTRUCTION.
+- Tagline: HUMANITY FOR HABITAT NGO.
+- Main message: “We Don't Just Build Houses, We Build Futures.”
+- Main colors: deep navy blue, teal, green, white, and subtle light-gray backgrounds.
+- Use orange only where a small accent improves the design.
+- Primary buttons should be green with white text.
+- Use rounded cards, elegant shadows, clean spacing, and professional typography.
+- The overall design must feel like a credible international humanitarian organization.
+
+### Logo
+Create a professional text-and-icon logo featuring a house, water droplet, or humanitarian shelter symbol.
+
+Display the logo consistently in the navigation, footer, and mobile menu. Make it easy to replace with the NGO's official logo later.
+
+### Design principles
+- Strong visual hierarchy.
+- Large, impactful photography.
+- Excellent text readability.
+- Consistent spacing and alignment.
+- Smooth, subtle hover effects.
+- Attractive section transitions.
+- No overcrowded layouts.
+- No excessive animations.
+- No generic, unfinished-looking AI design.
+- Do not use placeholder text such as Lorem Ipsum.
+
+## 3. HOMEPAGE
+
+Build a complete homepage with the following sections.
+
+### A. Header and navigation
+
+Create a clean, white navigation bar containing:
+
+- NGO logo and brand name.
+- Home.
+- About Us.
+- Projects.
+- Our Impact.
+- Get Involved.
+- Contact.
+- A prominent green “Donate Now” button with a heart icon.
+
+Requirements:
+- Sticky navigation when scrolling.
+- Smooth scrolling where appropriate.
+- Working navigation links.
+- Responsive mobile hamburger menu.
+- Accessible keyboard navigation.
+- Clear active-page indicators.
+- Mobile menu opens and closes properly.
+- Donation button opens the donation page or donation modal.
+
+### B. Hero section
+
+Use a wide, high-quality photograph showing African children accessing clean water, with construction workers or volunteers in the background.
+
+Create a split-image or image-background layout similar to the reference image.
+
+Headline:
+
+“Humanity for Habitat”
+
+Main heading:
+
+“We Don't Just Build Houses, We Build Futures.”
+
+Supporting text:
+
+“Providing clean water, construction training, and girl child education to create stronger, healthier, and more empowered communities.”
+
+Add two prominent call-to-action buttons:
+
+1. “Sponsor a Borehole” — takes visitors to the clean water project or donation form with the appropriate project selected.
+2. “Explore Our Projects” — takes visitors to the projects section or projects page.
+
+Include a subtle dark overlay behind text when needed for readability.
+
+On mobile devices, ensure the heading wraps naturally, buttons remain accessible, and the image crops appropriately.
+
+### C. Impact statistics
+
+Create a professional statistics section featuring:
+
+- Communities Reached.
+- Clean Water Projects.
+- Youth Trained.
+- Girls Supported.
+
+Use animated count-up effects only when the section becomes visible.
+
+IMPORTANT: Do not invent or falsely advertise actual NGO achievements. Use clearly identified demonstration figures in development mode and make them easy to replace with verified figures supplied by the organization. Provide a way to update these figures from the admin dashboard.
+
+### D. Our Three Pillars
+
+Create three attractive cards with relevant icons and photographs.
+
+**Pillar 1: Clean Water**
+
+Description: “We support access to safe drinking water through borehole installation, water purification systems, and sustainable community water initiatives.”
+
+Include:
+- Project details.
+- Community impact.
+- Project photographs.
+- “Support Clean Water” button.
+
+**Pillar 2: Construction Training**
+
+Description: “We empower young people with practical construction skills, vocational training, mentorship, and pathways toward sustainable employment.”
+
+Include:
+- Training program details.
+- Skills offered.
+- Training photographs.
+- “Support Training” button.
+
+**Pillar 3: Girl Child Education**
+
+Description: “We support girls through educational assistance, scholarships, school supplies, mentorship, and initiatives that help them pursue brighter futures.”
+
+Include:
+- Scholarship information.
+- Educational support programs.
+- Relevant photographs.
+- “Support Education” button.
+
+Each card must link to a dedicated project or program detail page.
+
+### E. Featured projects
+
+Create a professional project showcase with photographic cards.
+
+Each project should display:
+- Project title.
+- Location.
+- Project category.
+- Short description.
+- Project status.
+- Funding goal, where applicable.
+- Amount raised, where verified.
+- Progress bar.
+- “View Project” button.
+- “Donate to This Project” button.
+
+Add category filters:
+- All Projects.
+- Clean Water.
+- Construction Training.
+- Girl Child Education.
+
+Include a search field and pagination or a “Load More” option if the project list becomes large.
+
+Project progress must be calculated from actual stored figures. Never fabricate donations or imply that a proposed project has already been completed.
+
+### F. Our Impact in Action
+
+Create a visually engaging section inspired by the reference image.
+
+Show a gallery featuring:
+- Children accessing clean water.
+- Borehole construction and completed water facilities.
+- Young people participating in vocational training.
+- Girls attending school.
+- Volunteers working with local communities.
+
+Use a responsive photo grid with captions.
+
+Allow visitors to click an image to view it in a larger lightbox.
+
+Optimize images for performance and mobile devices.
+
+### G. Our story and mission
+
+Add an attractive section explaining why the organization exists.
+
+Include:
+- Our mission.
+- Our vision.
+- Our values.
+- Why our work matters.
+- Our commitment to transparent and sustainable community development.
+
+Use authentic, editable content. Do not invent the NGO's registration details, leadership history, partnerships, or achievements.
+
+Add a “Learn More About Us” button linking to the About page.
+
+### H. Testimonials and stories
+
+Create a section for beneficiary stories, volunteer experiences, and community testimonials.
+
+Each story may include:
+- Photograph, where permission has been obtained.
+- Name or approved anonymous identification.
+- Community.
+- Short story.
+- Relevant project.
+
+Use clearly marked sample content during development. Do not present invented testimonials as genuine statements from real beneficiaries.
+
+### I. Get involved
+
+Create four attractive action cards:
+
+- Make a Donation.
+- Volunteer With Us.
+- Become a Partner.
+- Sponsor a Project.
+
+Each card must link to the appropriate form or page.
+
+### J. Newsletter subscription
+
+Add a newsletter section with:
+- Email address field.
+- Subscribe button.
+- Consent statement.
+- Validation.
+- Success and error messages.
+- Duplicate-subscription handling where supported.
+
+Connect it to a backend or newsletter provider when configured. Do not claim subscriptions are saved if no service is connected.
+
+### K. Footer
+
+Create a polished dark navy footer with four columns.
+
+**Column 1: Organization**
+- Logo.
+- Short NGO description.
+- Social media links.
+
+**Column 2: Quick Links**
+- Home.
+- About Us.
+- Projects.
+- Our Impact.
+- Volunteer.
+- Donate.
+
+**Column 3: Contact — Ghana**
+- Accra, Ghana.
+- +233 24 123 4567.
+- ghana@bkhumanity.org.
+
+**Column 4: Contact — USA**
+- Washington, D.C., USA.
+- +1 (202) 555-0189.
+- usa@bkhumanity.org.
+
+Treat these contact details as demonstration content until verified by the NGO. Store them in a centralized configuration so they can be changed easily.
+
+Include:
+- Privacy Policy.
+- Terms of Service.
+- Cookie Policy.
+- Copyright notice.
+- Social media icons.
+
+Never make social media icons point to unrelated websites. Make the organization’s social URLs configurable.
+
+## 4. FULL DONATION SYSTEM
+
+Build a professional donation experience that is easy to use on mobile devices.
+
+### Donation page
+
+Include:
+- One-time donation.
+- Monthly recurring donation.
+- Optional annual recurring donation if supported.
+- Project-specific donations.
+- General fund donations.
+- Donor name.
+- Email address.
+- Country.
+- Optional phone number.
+- Optional message.
+- Anonymous donation option.
+- Optional consent to receive updates.
+
+### Suggested donation amounts
+
+Display selectable donation amounts such as:
+
+- GH₵50.
+- GH₵100.
+- GH₵250.
+- GH₵500.
+- GH₵1,000.
+- Custom amount.
+
+Provide USD options when the donor selects the United States or chooses USD.
+
+Allow donors to change the amount before proceeding.
+
+Clearly show:
+- Selected project.
+- Donation frequency.
+- Currency.
+- Donation amount.
+- Any applicable payment fees, where known.
+- Final total.
+
+### Payment gateway integration
+
+Design the payment system to support a suitable payment provider for Ghana and international donors.
+
+Prioritize researching and integrating an appropriate provider, such as Paystack or Flutterwave, subject to current availability and account eligibility.
+
+Requirements:
+- Use a secure server-side payment initialization process.
+- Keep secret API keys exclusively in server-side environment variables.
+- Never expose payment secrets in frontend code.
+- Redirect donors to the provider's secure checkout when required.
+- Verify payment status on the server.
+- Validate payment references and amounts.
+- Use signed webhooks where supported.
+- Prevent duplicate processing of payment notifications.
+- Save confirmed transactions in the database.
+- Provide clear success, failure, cancellation, and pending-payment pages.
+- Send donation receipts only after payment has been verified.
+- Include transaction reference and donation details in receipts.
+
+Do not simulate a successful payment and present it as real. If API credentials are unavailable, provide a clearly labeled sandbox/test mode and precise setup instructions.
+
+Do not store raw card numbers or CVV details.
+
+### Donation management
+
+The admin dashboard should allow authorized administrators to:
+- View donations.
+- Search and filter transactions.
+- View payment status.
+- Filter by date, project, country, and currency.
+- Export donation records to CSV.
+- View donation totals.
+- Track project fundraising progress.
+- Review recurring donation records where the provider supports them.
+
+Only verified transactions should count toward publicly displayed fundraising totals.
+
+## 5. PROJECTS AND PROJECT DETAIL PAGES
+
+Create a dedicated Projects page with a professional layout.
+
+Each project must have its own detail page containing:
+- Project title and category.
+- Main photograph.
+- Project location.
+- Project description.
+- Problem being addressed.
+- Objectives.
+- Planned activities.
+- Beneficiaries or intended beneficiaries.
+- Project timeline.
+- Project status.
+- Budget or fundraising goal, where applicable.
+- Verified amount raised.
+- Project updates.
+- Photo gallery.
+- Related projects.
+- Donation call to action.
+
+Include clear statuses such as:
+- Proposed.
+- Fundraising.
+- In Progress.
+- Completed.
+- On Hold.
+
+Allow administrators to create, edit, publish, unpublish, and delete projects through the dashboard.
+
+Include a confirmation step before deleting a project.
+
+## 6. ABOUT US PAGE
+
+Create a detailed About Us page containing:
+
+- Our Story.
+- Mission and Vision.
+- Core Values.
+- Our Three Pillars.
+- Our Approach to Community Development.
+- Leadership and Team.
+- Partners and Supporters.
+- Transparency and Accountability.
+- Registration and governance information, where verified.
+- Contact information.
+
+Include professional photographs, a timeline if real historical milestones are supplied, and clear donation and partnership calls to action.
+
+Do not invent leadership names, credentials, or organizational registration numbers.
+
+## 7. VOLUNTEER AND PARTNERSHIP SYSTEM
+
+Build a Volunteer page with a functional application form.
+
+Fields:
+- Full name.
+- Email address.
+- Phone number.
+- Country.
+- Area of interest.
+- Relevant skills.
+- Availability.
+- Short motivation statement.
+- Relevant experience.
+- Consent to data processing.
+
+Areas of interest may include:
+- Clean water projects.
+- Construction training.
+- Education.
+- Fundraising.
+- Communications.
+- Administration.
+- Community outreach.
+
+Build a separate Partnership page with a form for:
+- Corporate partnerships.
+- NGO collaborations.
+- Sponsorship.
+- Institutional partnerships.
+- Donations in kind.
+- Technical assistance.
+
+Validate submissions, save them to the backend, and provide appropriate confirmation messages.
+
+Authorized administrators must be able to review and update application statuses.
+
+## 8. CONTACT PAGE
+
+Create a complete contact page featuring:
+
+- Contact form.
+- Name.
+- Email.
+- Phone number, optional.
+- Subject.
+- Message.
+- Inquiry category.
+- Consent notice.
+
+Provide contact sections for Ghana and the USA.
+
+Include a map only after the NGO supplies and verifies the relevant address. Do not invent a street address or precise office location.
+
+Add:
+- Clickable email addresses.
+- Clickable telephone numbers.
+- WhatsApp contact button using a configurable official number.
+- Social media links.
+
+Implement server-side validation, spam protection, rate limiting, and secure message storage.
+
+If email delivery is configured, send the inquiry to the appropriate organizational email address. If it is not configured, explain the required setup instead of pretending messages have been delivered.
+
+## 9. ADMIN DASHBOARD
+
+Build a secure, responsive administrative dashboard.
+
+The dashboard must not be publicly accessible without authentication and appropriate authorization.
+
+### Dashboard overview
+
+Display:
+- Verified donations.
+- Donations by month.
+- Total projects.
+- Active projects.
+- Completed projects.
+- Volunteer applications.
+- Partnership inquiries.
+- Recent activity.
+
+Use real database information, not hardcoded demonstration totals, once connected.
+
+### Project management
+- Create projects.
+- Edit projects.
+- Upload project images.
+- Change project statuses.
+- Update budgets and goals.
+- Publish or unpublish projects.
+- Add project updates.
+
+### Donation management
+- View and search transactions.
+- Filter transactions.
+- View transaction references and status.
+- Export records.
+- Review payment reconciliation information.
+
+### Content management
+- Edit homepage headings and text.
+- Update mission and vision.
+- Edit contact information.
+- Update impact statistics.
+- Manage testimonials.
+- Manage project gallery images.
+- Edit footer links.
+- Update social media URLs.
+
+### Volunteer management
+- View applications.
+- Filter applications.
+- Update application status.
+- Add internal notes accessible only to authorized administrators.
+
+### Newsletter management
+- View subscribers.
+- Export consented subscriber records.
+- Unsubscribe or suppress addresses when requested.
+
+### User management and security
+- Secure administrator login.
+- Role-based permissions where required.
+- Protected API endpoints.
+- Secure session handling.
+- Logout functionality.
+- Password reset through a configured authentication provider.
+- Audit logs for important administrative actions.
+
+Do not expose admin credentials or provide a hardcoded production password.
+
+## 10. DATABASE AND BACKEND
+
+Use a suitable persistent database and backend architecture.
+
+Supabase with PostgreSQL is a suitable option if supported by the project environment.
+
+Suggested database tables:
+- profiles.
+- projects.
+- project_updates.
+- donations.
+- donation_events.
+- volunteer_applications.
+- partnership_inquiries.
+- contact_messages.
+- newsletter_subscribers.
+- testimonials.
+- gallery_images.
+- impact_statistics.
+- site_settings.
+- admin_audit_logs.
+
+Create appropriate relationships, indexes, timestamps, validation rules, and access policies.
+
+Requirements:
+- Apply database migrations or provide the necessary SQL schema.
+- Configure Row Level Security where applicable.
+- Ensure public visitors can read only published public content.
+- Ensure private donor and applicant information is not exposed.
+- Protect administrative operations.
+- Validate input on the server.
+- Use environment variables for credentials.
+- Never place service-role keys in client-side code.
+- Use secure image storage with appropriate access controls.
+- Handle database errors gracefully.
+- Provide a clear setup guide.
+
+The site must remain useful even when a third-party integration is not configured. Clearly distinguish available features from features awaiting configuration.
+
+## 11. RESPONSIVE DESIGN REQUIREMENTS
+
+The website must work properly across:
+
+- Small Android phones.
+- Large Android phones.
+- iPhones.
+- Tablets.
+- Laptops.
+- Desktop monitors.
+- Wide screens.
+
+Test layouts at approximately 320px, 375px, 430px, 768px, 1024px, 1440px, and wider screens.
+
+On mobile:
+- Use a functional hamburger menu.
+- Stack cards appropriately.
+- Make buttons easy to tap.
+- Avoid horizontal scrolling.
+- Keep text readable.
+- Ensure donation forms fit the screen.
+- Make tables responsive through mobile-friendly cards or controlled horizontal scrolling.
+- Ensure images do not distort.
+- Keep the donation button accessible.
+- Avoid oversized headings and overflowing navigation.
+- Use appropriate mobile image crops.
+
+All interactive elements must work with touchscreens, keyboards, and mouse input where applicable.
+
+## 12. SEO AND PERFORMANCE
+
+Implement essential search-engine optimization.
+
+Include:
+- Unique page titles.
+- Meta descriptions.
+- Canonical URLs where appropriate.
+- Open Graph metadata.
+- Social sharing images.
+- XML sitemap.
+- Robots.txt.
+- Structured data appropriate for a nonprofit organization, using verified details.
+- Descriptive image alt text.
+- Semantic headings.
+- Descriptive internal links.
+
+Optimize performance using:
+- Responsive images.
+- Lazy loading below-the-fold images.
+- Image compression.
+- Code splitting where appropriate.
+- Efficient component rendering.
+- Minimal unnecessary JavaScript.
+- Appropriate caching.
+- Optimized fonts.
+
+Aim for strong Core Web Vitals and accessibility, including WCAG 2.2 AA principles where practical.
+
+Respect user privacy and obtain appropriate consent for non-essential cookies and tracking technologies.
+
+## 13. LEGAL AND TRUST PAGES
+
+Create:
+- Privacy Policy.
+- Terms of Service.
+- Cookie Policy.
+- Donation and Refund Policy.
+- Transparency and Accountability page.
+
+Use editable, clearly labeled draft content that the NGO can review before publication. Do not claim legal compliance, charitable registration, tax-deductible status, or eligibility for tax benefits without verification.
+
+Provide a clear statement that donors should check the organization's applicable donation and refund conditions before contributing.
+
+## 14. ACCESSIBILITY AND USER EXPERIENCE
+
+Implement:
+- Keyboard-accessible navigation.
+- Visible focus indicators.
+- Proper form labels.
+- Helpful validation messages.
+- Accessible dialog and modal behavior.
+- Sufficient color contrast.
+- Alternative text for meaningful images.
+- Reduced-motion support.
+- Clear loading states.
+- Empty states when no projects or donations exist.
+- Helpful error and success messages.
+- Confirmation dialogs for destructive admin actions.
+
+Never use color as the only indicator of status.
+
+## 15. FUNCTIONAL TESTING
+
+Before declaring the website complete, test the actual implementation.
+
+Verify that:
+- Every navigation link works.
+- The mobile menu opens and closes.
+- The donation buttons navigate correctly.
+- Project filters work.
+- Project detail pages display the correct project.
+- Donation amounts can be selected and changed.
+- Form validation works.
+- Contact forms submit correctly to their configured destination.
+- Volunteer applications are saved when the backend is connected.
+- Newsletter subscriptions are saved when configured.
+- Admin routes are protected.
+- Unauthorized users cannot access private records.
+- Payment verification is performed on the server.
+- Duplicate payment events do not create duplicate donations.
+- Project fundraising totals use verified payments.
+- Images load correctly.
+- No important buttons are decorative or inactive.
+- There are no broken internal links.
+- There are no major browser console errors.
+- Mobile layouts have no unwanted horizontal overflow.
+- The website builds successfully.
+
+Use automated tests where practical and manually verify important workflows.
+
+Do not claim a test passed unless it was actually executed.
+
+## 16. PROJECT DELIVERY AND IMMEDIATE TESTING
+
+Generate the complete working application, not merely a design description.
+
+Provide:
+1. All required frontend files.
+2. Backend code and API routes where needed.
+3. Database schema and setup instructions.
+4. Responsive styling.
+5. Reusable UI components.
+6. Sample project records clearly marked as demonstration data.
+7. Environment variable example file without real secrets.
+8. Payment provider setup instructions.
+9. Authentication and admin setup instructions.
+10. Local development instructions.
+11. Production deployment instructions suitable for Vercel or another compatible host.
+12. A checklist of any external credentials or configuration still required.
+
+Make the application launchable in the available Google AI Studio preview environment. If that environment cannot support a particular backend feature directly, provide the necessary external backend setup and a working development fallback without misrepresenting the feature as production-ready.
+
+Use the simplest reliable implementation that works in the actual environment. Do not leave empty pages, fake buttons, unfinished forms, or unexplained TODO comments.
+
+## 17. FINAL DESIGN DIRECTION
+
+The finished website should look like a premium international NGO website: visually similar to the supplied reference, but cleaner, more polished, more accessible, and more professional.
+
+The homepage should immediately communicate the organization's humanitarian mission and encourage visitors to explore projects, volunteer, or donate.
+
+Use deep navy for trust, teal and green for hope and humanitarian action, white for clarity, and high-quality photography to communicate real community impact.
+
+**Final instruction:** Start building the application immediately. Inspect the supplied reference image, implement the complete website, run the available checks, and fix errors before presenting the result. Prioritize a working, responsive application over a long explanation. Clearly identify any feature that requires external credentials or deployment configuration before it can work in production.
