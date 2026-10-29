@@ -14,15 +14,15 @@ export const MaintenanceScreen: React.FC<MaintenanceScreenProps> = ({ settings, 
 
   const handleVerifyPasscode = (e: React.FormEvent) => {
     e.preventDefault();
-    const correctCode = settings.maintenancePasscode || 'admin123';
+    const correctCode = settings.maintenancePasscode || 'admin@2024';
     
-    // Accepts either the designated maintenance passcode or default admin passcode
-    if (passcode.trim() === correctCode || passcode.trim() === 'admin123') {
+    // Accepts strictly the configured staff authorization passkey
+    if (passcode.trim() === correctCode) {
       sessionStorage.setItem('bkh_staff_preview_unlocked', 'true');
       setError('');
       onUnlock();
     } else {
-      setError('Incorrect authorization passcode. Please check your admin credentials.');
+      setError('Access denied: Invalid authorization passkey.');
     }
   };
 
@@ -171,7 +171,7 @@ export const MaintenanceScreen: React.FC<MaintenanceScreenProps> = ({ settings, 
                     type="password"
                     autoFocus
                     required
-                    placeholder="Enter passkey (e.g. admin123)"
+                    placeholder="Enter authorized passkey"
                     value={passcode}
                     onChange={(e) => {
                       setPasscode(e.target.value);

@@ -26,7 +26,7 @@ export const initialSiteSettings: SiteSettings = {
   isSitePaused: true,
   maintenanceHeadline: 'Official Portal Staging & Private Preparation',
   maintenanceMessage: 'Access to this public portal is temporarily paused while final domain linkage, security audits, and system configuration are being completed. Please check back soon or contact our offices below.',
-  maintenancePasscode: 'admin123',
+  maintenancePasscode: 'admin@2024',
 };
 
 export const initialImpactStats: ImpactStat[] = [

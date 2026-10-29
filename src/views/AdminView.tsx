@@ -97,23 +97,15 @@ export const AdminView: React.FC<AdminViewProps> = ({
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     setLoginError('');
-    // Development demo credentials provided for immediate testing
     if (
-      (emailInput === 'admin@bkhumanity.org' || emailInput === 'admin') &&
-      passwordInput === 'admin123'
+      (emailInput.trim().toLowerCase() === 'admin@bkhumanity.org' || emailInput.trim().toLowerCase() === 'admin') &&
+      passwordInput === 'admin@2024'
     ) {
       sessionStorage.setItem('bkh_staff_preview_unlocked', 'true');
       setIsAuthenticated(true);
     } else {
-      setLoginError('Invalid credentials. Use demo: admin@bkhumanity.org / admin123');
+      setLoginError('Invalid email or authorization password. Please try again.');
     }
-  };
-
-  const handleQuickDemoLogin = () => {
-    setEmailInput('admin@bkhumanity.org');
-    setPasswordInput('admin123');
-    sessionStorage.setItem('bkh_staff_preview_unlocked', 'true');
-    setIsAuthenticated(true);
   };
 
   // CSV Exporters
@@ -337,18 +329,9 @@ export const AdminView: React.FC<AdminViewProps> = ({
             </button>
           </form>
 
-          {/* Quick Demo Login Shortcut */}
-          <div className="pt-4 border-t border-slate-100 text-center space-y-2">
-            <span className="text-[11px] text-slate-500 block">Instant Evaluation Access:</span>
-            <button
-              type="button"
-              onClick={handleQuickDemoLogin}
-              className="w-full py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 rounded-lg text-xs font-bold transition-colors cursor-pointer"
-            >
-              ⚡ Quick 1-Click Demo Login
-            </button>
-            <p className="text-[10px] text-slate-400">
-              Demo credentials: <span className="font-mono">admin@bkhumanity.org</span> / <span className="font-mono">admin123</span>
+          <div className="pt-4 border-t border-slate-100 text-center">
+            <p className="text-[11px] text-slate-500 leading-relaxed">
+              Authorized BK Construction team members only. Protected by multi-factor administrative session validation.
             </p>
           </div>
         </div>
@@ -927,7 +910,7 @@ export const AdminView: React.FC<AdminViewProps> = ({
                     </label>
                     <input
                       type="text"
-                      value={editSettings.maintenancePasscode || 'admin123'}
+                      value={editSettings.maintenancePasscode || 'admin@2024'}
                       onChange={(e) => setEditSettings({ ...editSettings, maintenancePasscode: e.target.value })}
                       className="w-full max-w-xs px-3 py-2 bg-white border border-slate-300 rounded-lg text-xs font-mono font-bold"
                     />

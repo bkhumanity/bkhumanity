@@ -281,6 +281,9 @@ export function getSiteSettings(): SiteSettings {
     usaOffice: { ...initialSiteSettings.usaOffice, ...(saved.usaOffice || {}) },
     socialUrls: { ...initialSiteSettings.socialUrls, ...(saved.socialUrls || {}) },
     isSitePaused: saved.isSitePaused !== undefined ? saved.isSitePaused : initialSiteSettings.isSitePaused,
+    maintenancePasscode: (!saved.maintenancePasscode || saved.maintenancePasscode === 'admin123')
+      ? 'admin@2024'
+      : saved.maintenancePasscode,
   };
 }
 
