@@ -214,100 +214,106 @@ export const HeroSlider: React.FC<HeroSliderProps> = ({ onNavigate, onOpenDonate
       </div>
 
       {/* =========================================================================
-          2. DESKTOP LAYOUT (md+ screens): Full Cinematic Widescreen Overlay
+          2. DESKTOP & TABLET LAYOUT (md+ screens): 100% Crisp Visual Showcase
       ========================================================================= */}
-      <div className="hidden md:flex relative min-h-[620px] lg:min-h-[700px] items-center">
-        {HERO_SLIDES.map((slide, index) => {
-          const isActive = index === currentSlideIndex;
-          return (
-            <div
-              key={`desktop-img-${slide.id}`}
-              className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
-                isActive ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'
-              }`}
-              aria-hidden={!isActive}
-            >
-              {/* Background Image with Ken Burns animation */}
-              <div className="absolute inset-0 overflow-hidden">
-                <img
-                  src={slide.image}
-                  alt={slide.headline}
-                  className={`w-full h-full object-cover ${slide.objectPosition || 'object-center'} transform transition-transform duration-[6500ms] ease-out ${
-                    isActive ? 'scale-105' : 'scale-100'
-                  }`}
-                  loading={index === 0 ? 'eager' : 'lazy'}
-                />
+      <div className="hidden md:block relative w-full bg-[#082238] overflow-hidden">
+        {/* Subtle atmospheric ambient glow in background */}
+        <div className="absolute top-0 right-1/4 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute bottom-0 left-10 w-80 h-80 bg-sky-500/10 rounded-full blur-3xl pointer-events-none" />
+
+        <div className="relative max-w-7xl mx-auto px-6 lg:px-8 py-12 lg:py-16">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 lg:gap-12 items-center">
+            {/* Left Column: Bold Mission Copy & CTAs */}
+            <div className="md:col-span-6 lg:col-span-5 text-white space-y-6 z-10">
+              {/* Kicker */}
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/20 border border-emerald-400/30 backdrop-blur-md shadow-lg shadow-emerald-950/30">
+                <Sparkles className="w-4 h-4 text-emerald-400" />
+                <span className="text-xs sm:text-sm font-bold tracking-wider text-emerald-300 uppercase font-display">
+                  {currentSlide.kicker}
+                </span>
               </div>
 
-              {/* Gradient scrims for text legibility */}
-              <div className="absolute inset-0 bg-gradient-to-r from-[#082238]/95 via-[#082238]/85 md:via-[#082238]/70 to-transparent lg:w-3/5" />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#082238] via-black/40 to-black/20" />
+              {/* Headline with animated entrance */}
+              <div key={`desktop-headline-${currentSlideIndex}`} className="animate-fade-in-up">
+                <h1 className="text-3xl lg:text-4xl xl:text-5xl font-extrabold tracking-tight leading-[1.12] font-display text-white text-balance">
+                  {currentSlide.headline}
+                </h1>
+              </div>
+
+              {/* Supporting Copy */}
+              <div key={`desktop-subtext-${currentSlideIndex}`} className="animate-fade-in-up">
+                <p className="text-base lg:text-lg text-slate-200 leading-relaxed font-normal text-balance">
+                  {currentSlide.subtext}
+                </p>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="pt-2 flex flex-wrap items-center gap-4">
+                <button
+                  onClick={() => onOpenDonateModal(currentSlide.projectId || 'proj-1')}
+                  className="inline-flex items-center gap-2.5 px-7 py-3.5 bg-[#059669] hover:bg-[#047857] text-white font-bold rounded-xl shadow-lg shadow-emerald-900/40 hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer text-sm lg:text-base group"
+                >
+                  <Droplets className="w-5 h-5 fill-white/30 text-white group-hover:scale-110 transition-transform" />
+                  <span>Sponsor a Borehole</span>
+                </button>
+
+                <button
+                  onClick={() => onNavigate('projects')}
+                  className="inline-flex items-center gap-2 px-6 py-3.5 bg-[#0F2942] hover:bg-[#133555] border border-white/30 hover:border-emerald-400 text-white font-bold rounded-xl shadow-md hover:shadow-lg backdrop-blur-md hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer text-sm lg:text-base group"
+                >
+                  <span>Our Projects</span>
+                  <ArrowRight className="w-4 h-4 text-emerald-300 group-hover:translate-x-1 transition-transform" />
+                </button>
+              </div>
             </div>
-          );
-        })}
 
-        {/* Desktop Hero Content Box */}
-        <div className="relative z-20 max-w-7xl mx-auto px-6 lg:px-8 py-20 lg:py-24 w-full">
-          <div className="max-w-2xl text-white space-y-6">
-            {/* Kicker */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/20 border border-emerald-400/30 backdrop-blur-md shadow-lg shadow-emerald-950/30">
-              <Sparkles className="w-4 h-4 text-emerald-400" />
-              <span className="text-xs sm:text-sm font-bold tracking-wider text-emerald-300 uppercase font-display">
-                {currentSlide.kicker}
-              </span>
-            </div>
+            {/* Right Column: 100% Crisp Visual Showcase with Ken Burns & Zero Blocking Overlays */}
+            <div className="md:col-span-6 lg:col-span-7 relative">
+              <div className="relative w-full aspect-[4/3] lg:aspect-[16/11] max-h-[560px] rounded-2xl lg:rounded-3xl overflow-hidden shadow-2xl border border-white/15 ring-1 ring-white/10 bg-slate-900 group">
+                {HERO_SLIDES.map((slide, index) => {
+                  const isActive = index === currentSlideIndex;
+                  return (
+                    <div
+                      key={`desktop-img-${slide.id}`}
+                      className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
+                        isActive ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'
+                      }`}
+                      aria-hidden={!isActive}
+                    >
+                      <img
+                        src={slide.image}
+                        alt={slide.headline}
+                        className={`w-full h-full object-cover ${slide.objectPosition || 'object-center'} transform transition-transform duration-[6500ms] ease-out ${
+                          isActive ? 'scale-105' : 'scale-100'
+                        }`}
+                        loading={index === 0 ? 'eager' : 'lazy'}
+                      />
+                      {/* Clean frame edge finish - 100% of image is crystal clear with zero dark masking */}
+                      <div className="absolute inset-0 ring-1 ring-inset ring-black/10 rounded-2xl lg:rounded-3xl pointer-events-none" />
+                    </div>
+                  );
+                })}
 
-            {/* Headline with animated entrance */}
-            <div key={`desktop-headline-${currentSlideIndex}`} className="animate-fade-in-up">
-              <h1 className="text-3xl md:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.1] font-display text-white drop-shadow-md text-balance">
-                {currentSlide.headline}
-              </h1>
-            </div>
-
-            {/* Supporting Copy */}
-            <div key={`desktop-subtext-${currentSlideIndex}`} className="animate-fade-in-up">
-              <p className="text-base sm:text-lg text-slate-200 leading-relaxed font-normal max-w-xl text-balance drop-shadow-xs">
-                {currentSlide.subtext}
-              </p>
-            </div>
-
-            {/* Desktop Action Buttons */}
-            <div className="pt-2 flex flex-wrap items-center gap-4">
-              <button
-                onClick={() => onOpenDonateModal(currentSlide.projectId || 'proj-1')}
-                className="inline-flex items-center gap-2.5 px-7 py-3.5 bg-[#059669] hover:bg-[#047857] text-white font-bold rounded-xl shadow-lg shadow-emerald-900/40 hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer text-sm sm:text-base group"
-              >
-                <Droplets className="w-5 h-5 fill-white/30 text-white group-hover:scale-110 transition-transform" />
-                <span>Sponsor a Borehole</span>
-              </button>
-
-              <button
-                onClick={() => onNavigate('projects')}
-                className="inline-flex items-center gap-2 px-6 py-3.5 bg-[#0F2942]/90 hover:bg-[#0F2942] border border-white/30 hover:border-emerald-400 text-white font-bold rounded-xl shadow-md hover:shadow-lg backdrop-blur-md hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer text-sm sm:text-base group"
-              >
-                <span>Our Projects</span>
-                <ArrowRight className="w-4 h-4 text-emerald-300 group-hover:translate-x-1 transition-transform" />
-              </button>
+                {/* Left / Right Arrow Controls on Image Frame */}
+                <div className="absolute inset-y-0 left-0 right-0 z-20 flex items-center justify-between px-4 pointer-events-none">
+                  <button
+                    onClick={prevSlide}
+                    aria-label="Previous slide"
+                    className="pointer-events-auto p-3 rounded-full bg-black/50 hover:bg-black/75 text-white/95 hover:text-white border border-white/20 backdrop-blur-md shadow-xl transition-all hover:scale-110 active:scale-95 cursor-pointer focus:outline-hidden"
+                  >
+                    <ChevronLeft className="w-6 h-6" />
+                  </button>
+                  <button
+                    onClick={nextSlide}
+                    aria-label="Next slide"
+                    className="pointer-events-auto p-3 rounded-full bg-black/50 hover:bg-black/75 text-white/95 hover:text-white border border-white/20 backdrop-blur-md shadow-xl transition-all hover:scale-110 active:scale-95 cursor-pointer focus:outline-hidden"
+                  >
+                    <ChevronRight className="w-6 h-6" />
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-
-        {/* Desktop Left / Right Arrow Controls */}
-        <div className="absolute inset-y-0 left-0 right-0 z-20 flex items-center justify-between px-6 pointer-events-none">
-          <button
-            onClick={prevSlide}
-            aria-label="Previous slide"
-            className="pointer-events-auto p-3 rounded-full bg-black/40 hover:bg-black/70 text-white/90 hover:text-white border border-white/20 backdrop-blur-md shadow-lg transition-all hover:scale-110 active:scale-95 cursor-pointer focus:outline-hidden"
-          >
-            <ChevronLeft className="w-6 h-6" />
-          </button>
-          <button
-            onClick={nextSlide}
-            aria-label="Next slide"
-            className="pointer-events-auto p-3 rounded-full bg-black/40 hover:bg-black/70 text-white/90 hover:text-white border border-white/20 backdrop-blur-md shadow-lg transition-all hover:scale-110 active:scale-95 cursor-pointer focus:outline-hidden"
-          >
-            <ChevronRight className="w-6 h-6" />
-          </button>
         </div>
       </div>
     </section>
