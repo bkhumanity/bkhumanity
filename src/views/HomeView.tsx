@@ -3,6 +3,7 @@ import { Project, ImpactStat, Testimonial, GalleryItem, FieldVideo } from '../ty
 import { addNewsletterSubscriber, getBlogPosts } from '../services/storage';
 import { FAQs } from '../components/FAQs';
 import { VideoSection } from '../components/VideoSection';
+import { HeroSlider } from '../components/HeroSlider';
 import {
   Droplets,
   HardHat,
@@ -75,69 +76,9 @@ export const HomeView: React.FC<HomeViewProps> = ({
   return (
     <div className="space-y-16 lg:space-y-24 pb-16">
       {/* =========================================================================
-          SECTION B: HERO SECTION (Faithful to Reference Mockup)
+          SECTION B: CINEMATIC MULTI-IMAGE HERO SHOWCASE
       ========================================================================= */}
-      <section className="relative w-full bg-[#082238] overflow-hidden">
-        {/* Background Image with Cinematic Overlay */}
-        <div className="relative min-h-[580px] lg:min-h-[640px] flex items-center">
-          <img
-            src="/images/hero_african_water_well_1793198749440.jpg"
-            alt="African children joyfully drinking pure clean water from a newly constructed borehole well"
-            className="absolute inset-0 w-full h-full object-cover object-center"
-          />
-          {/* Subtle gradient scrim matching the reference layout: deeper navy on the left for contrast, transparent on the right */}
-          <div className="absolute inset-0 bg-gradient-to-r from-[#082238]/95 via-[#0A2E4C]/80 to-transparent lg:w-3/5" />
-          <div className="absolute inset-0 bg-black/25" />
-
-          {/* Hero Content Box */}
-          <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
-            <div className="max-w-2xl text-white space-y-6">
-              {/* Kicker Tag */}
-              <div className="inline-block">
-                <span className="text-sm sm:text-base font-bold tracking-wide text-emerald-400 uppercase font-display">
-                  Humanity For Habitat
-                </span>
-              </div>
-
-              {/* Main Headline */}
-              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-tight font-display text-white drop-shadow-sm text-balance">
-                We Don&apos;t Just Build Houses, <br className="hidden sm:inline" />
-                We Build Futures.
-              </h1>
-
-              {/* Supporting Copy */}
-              <p className="text-base sm:text-lg text-slate-200 leading-relaxed font-normal max-w-xl">
-                Providing clean water, vocational construction training, and girl child education to create stronger, healthier, and self-sustaining communities in Ghana and beyond.
-              </p>
-
-              {/* Prominent CTA Buttons matching reference design */}
-              <div className="pt-2 flex flex-wrap items-center gap-4">
-                <button
-                  onClick={() => onOpenDonateModal('proj-1')}
-                  className="inline-flex items-center gap-2.5 px-6 py-3.5 bg-[#059669] hover:bg-[#047857] text-white font-bold rounded-lg shadow-lg hover:shadow-xl transition-all cursor-pointer text-sm sm:text-base group"
-                >
-                  <Droplets className="w-5 h-5 fill-white/30 text-white group-hover:scale-110 transition-transform" />
-                  <span>Sponsor a Borehole</span>
-                </button>
-
-                <button
-                  onClick={() => onNavigate('projects')}
-                  className="inline-flex items-center gap-2 px-6 py-3.5 bg-[#0F2942]/80 hover:bg-[#0F2942] border border-white/30 text-white font-bold rounded-lg shadow-md hover:shadow-lg backdrop-blur-xs transition-all cursor-pointer text-sm sm:text-base group"
-                >
-                  <span>Our Projects</span>
-                  <ArrowRight className="w-4 h-4 text-emerald-300 group-hover:translate-x-1 transition-transform" />
-                </button>
-              </div>
-
-              {/* Quick trust indicator */}
-              <div className="pt-4 flex items-center gap-2 text-xs text-slate-300">
-                <CheckCircle className="w-4 h-4 text-emerald-400 shrink-0" />
-                <span>100% of public borehole donations fund field drilling materials & local artisan labor</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <HeroSlider onNavigate={onNavigate} onOpenDonateModal={onOpenDonateModal} />
 
       {/* =========================================================================
           SECTION C: IMPACT STATISTICS (With Count-Up & Demonstration Transparency)
