@@ -18,7 +18,6 @@ import {
   Building2,
   Sparkles,
   BookOpen,
-  Clock,
 } from 'lucide-react';
 
 interface HomeViewProps {
@@ -698,12 +697,6 @@ export const HomeView: React.FC<HomeViewProps> = ({
               </div>
               <div className="p-6 flex-1 flex flex-col justify-between">
                 <div>
-                  <div className="flex items-center gap-2 text-xs text-slate-500 mb-2">
-                    <Clock className="w-3.5 h-3.5 text-slate-400" />
-                    <span>{article.readTimeMinutes} min read</span>
-                    <span>&bull;</span>
-                    <span>{article.publishedAt}</span>
-                  </div>
                   <h3 className="text-base font-bold text-[#0F2942] group-hover:text-emerald-700 transition-colors leading-snug line-clamp-2 mb-2">
                     {article.title}
                   </h3>
@@ -712,11 +705,11 @@ export const HomeView: React.FC<HomeViewProps> = ({
                   </p>
                 </div>
                 <div className="pt-4 border-t border-slate-100 flex items-center justify-between">
-                  <span className="text-xs font-semibold text-slate-700 truncate max-w-[150px]">
-                    {article.author.name}
+                  <span className="text-[11px] font-medium text-slate-400">
+                    Educational Guide
                   </span>
                   <span className="text-xs font-bold text-emerald-700 inline-flex items-center gap-1 group-hover:translate-x-1 transition-transform">
-                    <span>Read Full Story</span>
+                    <span>Read Article</span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </span>
                 </div>

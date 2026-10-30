@@ -196,6 +196,7 @@ export interface BlogPost {
   readTimeMinutes: number;
   imageUrl: string;
   tags: string[];
+  focusKeyword?: string;
   featured?: boolean;
   relatedProjectId?: string;
 }

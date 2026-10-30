@@ -32,7 +32,7 @@ const STORAGE_KEYS = {
   STATS: 'bk_stats_v1',
   TESTIMONIALS: 'bk_testimonials_v1',
   VIDEOS: 'bk_videos_v1',
-  BLOG_POSTS: 'bk_blog_posts_v3',
+  BLOG_POSTS: 'bk_blog_posts_v4',
 };
 
 type Listener = () => void;

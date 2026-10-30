@@ -3,10 +3,6 @@ import { BlogPost, Project } from '../types';
 import { MarkdownRenderer } from '../components/MarkdownRenderer';
 import {
   BookOpen,
-  Clock,
-  Calendar,
-  User,
-  MapPin,
   Share2,
   Check,
   Copy,
@@ -177,19 +173,16 @@ export const BlogView: React.FC<BlogViewProps> = ({
           {/* Article Header Card */}
           <div className="bg-white rounded-2xl shadow-sm border border-slate-200/90 overflow-hidden mb-10">
             <div className="p-6 sm:p-10 lg:p-12">
-              {/* Category & Reading Time */}
+              {/* Category Badge */}
               <div className="flex flex-wrap items-center gap-3 mb-4">
-                <span className="px-3 py-1 bg-emerald-50 text-emerald-800 text-xs font-extrabold uppercase tracking-wider rounded-md border border-emerald-100">
+                <span className="px-3.5 py-1.5 bg-emerald-50 text-emerald-800 text-xs font-extrabold uppercase tracking-wider rounded-lg border border-emerald-200 shadow-2xs">
                   {activePost.category}
                 </span>
-                <span className="flex items-center gap-1.5 text-xs font-medium text-slate-500">
-                  <Clock className="w-3.5 h-3.5 text-slate-400" />
-                  <span>{activePost.readTimeMinutes} min read</span>
-                </span>
-                <span className="flex items-center gap-1.5 text-xs font-medium text-slate-500">
-                  <Calendar className="w-3.5 h-3.5 text-slate-400" />
-                  <span>{activePost.publishedAt}</span>
-                </span>
+                {activePost.focusKeyword && (
+                  <span className="px-3 py-1 bg-slate-100 text-slate-700 text-xs font-semibold rounded-lg border border-slate-200">
+                    Topic: {activePost.focusKeyword}
+                  </span>
+                )}
               </div>
 
               {/* Title */}
@@ -197,48 +190,10 @@ export const BlogView: React.FC<BlogViewProps> = ({
                 {activePost.title}
               </h1>
 
-              {/* Excerpt Lead */}
-              <p className="text-base sm:text-lg text-slate-600 leading-relaxed font-normal mb-8 pb-8 border-b border-slate-100">
+              {/* Excerpt Lead / Description */}
+              <p className="text-base sm:text-lg text-slate-600 leading-relaxed font-normal mb-6">
                 {activePost.excerpt}
               </p>
-
-              {/* Author Row */}
-              <div className="flex flex-wrap items-center justify-between gap-4">
-                <div className="flex items-center gap-3.5">
-                  <div className="w-11 h-11 rounded-full bg-slate-100 border border-slate-200 text-[#0F2942] font-bold flex items-center justify-center text-sm">
-                    {activePost.author.name
-                      .split(' ')
-                      .map((n) => n[0])
-                      .slice(0, 2)
-                      .join('')}
-                  </div>
-                  <div>
-                    <div className="text-sm font-bold text-slate-900">
-                      {activePost.author.name}
-                    </div>
-                    <div className="text-xs text-slate-500 flex items-center gap-1.5">
-                      <span>{activePost.author.role}</span>
-                      <span>&bull;</span>
-                      <span className="flex items-center gap-0.5 text-slate-400">
-                        <MapPin className="w-3 h-3" />
-                        {activePost.author.location}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Tags preview */}
-                <div className="flex flex-wrap items-center gap-1.5">
-                  {activePost.tags.slice(0, 3).map((tag) => (
-                    <span
-                      key={tag}
-                      className="px-2 py-0.5 bg-slate-100 text-slate-600 rounded text-[11px] font-medium"
-                    >
-                      #{tag}
-                    </span>
-                  ))}
-                </div>
-              </div>
             </div>
 
             {/* Featured Image */}
@@ -255,9 +210,13 @@ export const BlogView: React.FC<BlogViewProps> = ({
               </div>
             </div>
 
-            {/* Markdown Article Body */}
+            {/* Markdown Article Body with Internal Link Interceptor */}
             <div className="p-6 sm:p-10 lg:p-12">
-              <MarkdownRenderer content={activePost.content} />
+              <MarkdownRenderer
+                content={activePost.content}
+                onNavigate={onNavigate}
+                onOpenDonateModal={onOpenDonateModal}
+              />
 
               {/* Tag Cloud */}
               <div className="mt-12 pt-8 border-t border-slate-200">
@@ -277,60 +236,66 @@ export const BlogView: React.FC<BlogViewProps> = ({
                 </div>
               </div>
 
-              {/* Author Bio Box */}
-              <div className="mt-10 p-6 bg-slate-50 rounded-xl border border-slate-200/80 flex flex-col sm:flex-row items-center sm:items-start gap-4">
-                <div className="w-14 h-14 rounded-full bg-emerald-100 text-emerald-900 border border-emerald-300 font-bold flex items-center justify-center text-lg shrink-0">
-                  {activePost.author.name
-                    .split(' ')
-                    .map((n) => n[0])
-                    .slice(0, 2)
-                    .join('')}
-                </div>
-                <div className="text-center sm:text-left">
-                  <h4 className="text-sm font-bold text-slate-900">
-                    Written by {activePost.author.name}
-                  </h4>
-                  <p className="text-xs text-emerald-700 font-medium mb-1.5">
-                    {activePost.author.role} &bull; {activePost.author.location}
-                  </p>
-                  <p className="text-xs text-slate-600 leading-relaxed">
-                    Working directly in Ghanaian communities to implement sustainable clean water infrastructure, youth vocational trades, and girl-child educational mentorship.
-                  </p>
-                </div>
-              </div>
-
-              {/* Action Callout Box: Donate or View Project */}
-              <div className="mt-10 p-6 sm:p-8 bg-gradient-to-br from-[#0F2942] to-[#1E3A5F] rounded-2xl text-white shadow-md">
-                <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-                  <div className="space-y-2 text-center md:text-left">
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-bold border border-emerald-400/30">
-                      <Sparkles className="w-3.5 h-3.5" />
-                      Make a Real Difference Today
+              {/* Dual Next-Steps Conversion Hub (Commercial & Humanitarian) */}
+              <div className="mt-12 pt-8 border-t border-slate-200 grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* 1. Commercial Construction & Civil Engineering CTA */}
+                <div className="bg-slate-900 text-white rounded-2xl p-6 sm:p-7 flex flex-col justify-between border border-slate-800 shadow-md">
+                  <div className="space-y-3 mb-6">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/20 text-blue-300 text-xs font-bold border border-blue-400/30">
+                      <Sparkles className="w-3.5 h-3.5 text-blue-400" />
+                      Commercial Building & Engineering
                     </span>
-                    <h3 className="text-xl font-bold text-white">
-                      Support Our Community Interventions in Ghana
+                    <h3 className="text-lg sm:text-xl font-bold text-white font-display">
+                      Planning a Construction or Renovation in Ghana?
                     </h3>
-                    <p className="text-xs sm:text-sm text-slate-300 max-w-xl">
-                      {linkedProject
-                        ? `Help us complete "${linkedProject.title}" to provide long-lasting benefits to over ${linkedProject.beneficiaries}.`
-                        : 'Your donation directly buys borehole drilling equipment, solar pumps, school supplies, and artisan toolkits.'}
+                    <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                      From architectural blueprints and soil testing to turnkey residential builds and civil works across Accra, Kumasi, and all regions. Speak directly with our certified engineers.
                     </p>
                   </div>
-                  <div className="flex flex-col sm:flex-row items-center gap-3 shrink-0 w-full sm:w-auto">
-                    {linkedProject && (
-                      <button
-                        onClick={() => onNavigate('project-detail', linkedProject.id)}
-                        className="w-full sm:w-auto px-4 py-2.5 bg-white/10 hover:bg-white/20 text-white text-xs font-bold rounded-lg border border-white/20 transition-colors cursor-pointer text-center"
-                      >
-                        View Project Details
-                      </button>
-                    )}
+                  <div>
                     <button
-                      onClick={() => onOpenDonateModal(activePost.relatedProjectId || 'general')}
-                      className="w-full sm:w-auto px-6 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-lg shadow-sm transition-all cursor-pointer flex items-center justify-center gap-2"
+                      onClick={() => {
+                        onNavigate('contact');
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                      }}
+                      className="w-full inline-flex items-center justify-center gap-2 px-5 py-3 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl shadow-sm transition-all cursor-pointer text-xs sm:text-sm"
+                    >
+                      <span>Contact Our Engineering Team</span>
+                      <ArrowRight className="w-4 h-4" />
+                    </button>
+                  </div>
+                </div>
+
+                {/* 2. Humanitarian Non-Profit & Borehole Sponsorship CTA */}
+                <div className="bg-gradient-to-br from-[#064E3B] to-[#0F2942] text-white rounded-2xl p-6 sm:p-7 flex flex-col justify-between border border-emerald-800/40 shadow-md">
+                  <div className="space-y-3 mb-6">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-bold border border-emerald-400/30">
+                      <Heart className="w-3.5 h-3.5 text-emerald-400" />
+                      Humanity For Habitat NGO
+                    </span>
+                    <h3 className="text-lg sm:text-xl font-bold text-white font-display">
+                      Sponsor a Borehole or Educate a Rural Scholar
+                    </h3>
+                    <p className="text-xs sm:text-sm text-slate-200 leading-relaxed">
+                      100% of public donations purchase field drilling pipes, submersible solar pumps, and student scholarship requisites. Transform a community with clean water today.
+                    </p>
+                  </div>
+                  <div className="flex flex-col sm:flex-row gap-2.5">
+                    <button
+                      onClick={() => onOpenDonateModal(activePost.relatedProjectId || 'proj-1')}
+                      className="flex-1 inline-flex items-center justify-center gap-2 px-5 py-3 bg-[#059669] hover:bg-[#047857] text-white font-bold rounded-xl shadow-sm transition-all cursor-pointer text-xs sm:text-sm"
                     >
                       <Heart className="w-4 h-4 fill-white/20" />
-                      <span>Donate to This Cause</span>
+                      <span>Sponsor a Borehole</span>
+                    </button>
+                    <button
+                      onClick={() => {
+                        onNavigate('projects');
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                      }}
+                      className="inline-flex items-center justify-center px-4 py-3 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-xl border border-white/20 transition-all cursor-pointer text-xs"
+                    >
+                      <span>Our Projects</span>
                     </button>
                   </div>
                 </div>
@@ -372,12 +337,6 @@ export const BlogView: React.FC<BlogViewProps> = ({
                       </span>
                     </div>
                     <div className="p-4 flex-1 flex flex-col">
-                      <div className="flex items-center gap-2 text-[11px] text-slate-500 mb-2">
-                        <Calendar className="w-3 h-3 text-slate-400" />
-                        <span>{post.publishedAt}</span>
-                        <span>&bull;</span>
-                        <span>{post.readTimeMinutes}m read</span>
-                      </div>
                       <h4 className="text-sm font-bold text-slate-900 group-hover:text-emerald-700 transition-colors line-clamp-2 mb-2">
                         {post.title}
                       </h4>
@@ -504,18 +463,6 @@ export const BlogView: React.FC<BlogViewProps> = ({
               {/* Right Column: Editorial Summary */}
               <div className="lg:col-span-5 p-6 sm:p-10 flex flex-col justify-between">
                 <div>
-                  <div className="flex items-center gap-3 text-xs text-slate-500 font-medium mb-3">
-                    <span className="flex items-center gap-1">
-                      <Calendar className="w-3.5 h-3.5 text-slate-400" />
-                      {featuredPost.publishedAt}
-                    </span>
-                    <span>&bull;</span>
-                    <span className="flex items-center gap-1">
-                      <Clock className="w-3.5 h-3.5 text-slate-400" />
-                      {featuredPost.readTimeMinutes} min read
-                    </span>
-                  </div>
-
                   <h2 className="text-xl sm:text-2xl font-extrabold text-[#0F2942] group-hover:text-emerald-700 transition-colors leading-snug mb-3">
                     {featuredPost.title}
                   </h2>
@@ -525,31 +472,15 @@ export const BlogView: React.FC<BlogViewProps> = ({
                   </p>
                 </div>
 
-                <div>
-                  <div className="flex items-center justify-between pt-4 border-t border-slate-100">
-                    <div className="flex items-center gap-2.5">
-                      <div className="w-9 h-9 rounded-full bg-slate-100 border border-slate-200 text-[#0F2942] text-xs font-bold flex items-center justify-center">
-                        {featuredPost.author.name
-                          .split(' ')
-                          .map((n) => n[0])
-                          .slice(0, 2)
-                          .join('')}
-                      </div>
-                      <div>
-                        <div className="text-xs font-bold text-slate-900">
-                          {featuredPost.author.name}
-                        </div>
-                        <div className="text-[11px] text-slate-500">
-                          {featuredPost.author.location}
-                        </div>
-                      </div>
-                    </div>
+                <div className="pt-4 border-t border-slate-100 flex items-center justify-between">
+                  <span className="text-xs font-semibold text-slate-400">
+                    Comprehensive Guide
+                  </span>
 
-                    <span className="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-700 group-hover:translate-x-1 transition-transform">
-                      <span>Read Story</span>
-                      <ArrowRight className="w-4 h-4" />
-                    </span>
-                  </div>
+                  <span className="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-700 group-hover:translate-x-1 transition-transform">
+                    <span>Read Article</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </span>
                 </div>
               </div>
             </div>
@@ -617,19 +548,6 @@ export const BlogView: React.FC<BlogViewProps> = ({
                 {/* Content */}
                 <div className="p-6 flex-1 flex flex-col justify-between">
                   <div>
-                    {/* Meta info */}
-                    <div className="flex items-center gap-2 text-xs text-slate-500 mb-3">
-                      <span className="flex items-center gap-1">
-                        <Calendar className="w-3 h-3 text-slate-400" />
-                        {post.publishedAt}
-                      </span>
-                      <span>&bull;</span>
-                      <span className="flex items-center gap-1">
-                        <Clock className="w-3 h-3 text-slate-400" />
-                        {post.readTimeMinutes} min read
-                      </span>
-                    </div>
-
                     {/* Title */}
                     <h3 className="text-lg font-bold text-[#0F2942] group-hover:text-emerald-700 transition-colors leading-snug mb-3 line-clamp-2">
                       {post.title}
@@ -659,23 +577,14 @@ export const BlogView: React.FC<BlogViewProps> = ({
                       )}
                     </div>
 
-                    {/* Bottom Author Row & CTA */}
+                    {/* Bottom CTA Row */}
                     <div className="pt-4 border-t border-slate-100 flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <div className="w-7 h-7 rounded-full bg-slate-100 text-slate-700 font-bold text-[10px] flex items-center justify-center">
-                          {post.author.name
-                            .split(' ')
-                            .map((n) => n[0])
-                            .slice(0, 2)
-                            .join('')}
-                        </div>
-                        <span className="text-xs font-semibold text-slate-700 truncate max-w-[120px]">
-                          {post.author.name}
-                        </span>
-                      </div>
+                      <span className="text-[11px] font-medium text-slate-400">
+                        Educational Guide
+                      </span>
 
                       <div className="inline-flex items-center gap-1 text-xs font-bold text-emerald-700 group-hover:translate-x-1 transition-transform">
-                        <span>Read</span>
+                        <span>Read Article</span>
                         <ArrowRight className="w-3.5 h-3.5" />
                       </div>
                     </div>
