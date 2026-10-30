@@ -20,6 +20,7 @@ import { DonationModal } from './components/DonationModal';
 import { ImageLightbox } from './components/ImageLightbox';
 import { VideoModal } from './components/VideoModal';
 import { FloatingWhatsApp } from './components/FloatingWhatsApp';
+import { AIAssistantModal } from './components/AIAssistantModal';
 
 import { HomeView } from './views/HomeView';
 import { AboutView } from './views/AboutView';
@@ -292,6 +293,13 @@ export default function App() {
         video={selectedVideo}
         isOpen={isVideoModalOpen}
         onClose={() => setIsVideoModalOpen(false)}
+      />
+
+      {/* AI Project Concierge */}
+      <AIAssistantModal
+        onNavigate={handleNavigate}
+        onOpenDonateModal={handleOpenDonate}
+        whatsappNumber={settings.ghanaOffice.whatsapp}
       />
 
       {/* Floating WhatsApp Contact Button */}
