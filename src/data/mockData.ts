@@ -1,6 +1,7 @@
 import { Project, ImpactStat, Testimonial, GalleryItem, SiteSettings, Donation, FieldVideo, BlogPost } from '../types';
 import { blogArticles15 } from './blogArticles15';
 import { blogArticles10More } from './blogArticles10More';
+import { blogArticlesSemrush10 } from './blogArticlesSemrush10';
 
 export const initialSiteSettings: SiteSettings = {
   orgName: 'BK CONSTRUCTION',
@@ -449,6 +450,7 @@ export const initialVideos: FieldVideo[] = [
 ];
 
 export const initialBlogPosts: BlogPost[] = [
+  ...blogArticlesSemrush10,
   ...blogArticles15,
   ...blogArticles10More,
   {
