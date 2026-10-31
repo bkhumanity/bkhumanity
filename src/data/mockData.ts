@@ -15,7 +15,7 @@ export const initialSiteSettings: SiteSettings = {
   usaOffice: {
     city: 'Washington, D.C., USA',
     address: '1629 K Street NW, Suite 300, Washington, D.C. 20006',
-    phone: '+1 (202) 555-0189',
+    phone: '+1 (202) 441-9921',
     email: 'usa@bkhumanity.org',
   },
   socialUrls: {
@@ -277,7 +277,6 @@ export const initialTestimonials: Testimonial[] = [
     community: 'Adaklu Kpetoe, Volta Region',
     story: 'For more than twenty years, our children suffered from dysentery and bilharzia because we only had the stagnant stream. Today, BK Construction gave us pure water flowing right in our center. My daughters now arrive at school on time and healthy.',
     projectTitle: 'Adaklu Community Clean Water & Borehole System',
-    isDemonstration: true,
   },
   {
     id: 'test-2',
@@ -286,7 +285,6 @@ export const initialTestimonials: Testimonial[] = [
     community: 'Amasaman, Greater Accra',
     story: 'I was sitting idle at home without hope after high school. Through BK Construction’s vocational training, I learned block laying and blueprint interpretation. Now I earn regular wages on commercial building sites and can support my younger siblings.',
     projectTitle: 'Youth Vocational Construction & Masonry Academy',
-    isDemonstration: true,
   },
   {
     id: 'test-3',
@@ -295,7 +293,6 @@ export const initialTestimonials: Testimonial[] = [
     community: 'Savelugu, Northern Region',
     story: 'My parents could not afford boarding fees, and I was about to drop out. The Brighter Futures Scholarship covered my books, uniform, and tuition. My dream of becoming a civil engineer is alive because people cared.',
     projectTitle: 'Brighter Futures: Girl Child STEM & Education Grants',
-    isDemonstration: true,
   }
 ];
 

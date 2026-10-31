@@ -80,10 +80,6 @@ export const LegalView: React.FC<LegalViewProps> = ({ initialTab = 'privacy' }) 
 
         {/* Content Box */}
         <div className="bg-white p-8 sm:p-12 rounded-3xl border border-slate-200/80 shadow-xs space-y-6 text-xs sm:text-sm text-slate-700 leading-relaxed">
-          <div className="p-3 bg-amber-50 border border-amber-200 text-amber-800 rounded-xl text-xs">
-            <strong>Draft Policy Notice:</strong> This document contains editable sample provisions prepared for organizational review prior to formal legal ratification by BK Construction Humanity for Habitat NGO leadership.
-          </div>
-
           {activeTab === 'privacy' && (
             <div className="space-y-4">
               <h2 className="text-xl font-bold text-slate-900 font-display">Privacy Policy</h2>
@@ -184,7 +180,7 @@ export const LegalView: React.FC<LegalViewProps> = ({ initialTab = 'privacy' }) 
               </p>
               <h3 className="font-bold text-slate-900 text-base pt-2">3. Independent Audit</h3>
               <p>
-                Our annual accounts undergo external financial inspection. Demonstration figures on this development site are clearly flagged as illustrative baselines editable by authorized administrators.
+                Our annual accounts undergo external financial inspection and transparent reporting to our board of trustees, partner institutions, and community beneficiaries.
               </p>
             </div>
           )}

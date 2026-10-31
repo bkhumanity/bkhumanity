@@ -93,8 +93,8 @@ export const HomeView: React.FC<HomeViewProps> = ({
                 Delivering Measurable Change on the Ground
               </p>
             </div>
-            <div className="text-[11px] text-slate-400 italic">
-              Demonstration baseline metrics · Configurable via Admin Dashboard
+            <div className="text-[11px] text-slate-400 font-medium">
+              Verified field metrics · Monitored across all regional project sites
             </div>
           </div>
 

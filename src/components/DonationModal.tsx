@@ -566,8 +566,7 @@ export const DonationModal: React.FC<DonationModalProps> = ({
                     </label>
                     <input
                       type="text"
-                      placeholder="•••• •••• •••• 4242 (Test Mode Active)"
-                      defaultValue="4242 •••• •••• 4242"
+                      placeholder="•••• •••• •••• ••••"
                       className="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 font-mono"
                     />
                   </div>
@@ -579,7 +578,6 @@ export const DonationModal: React.FC<DonationModalProps> = ({
                       <input
                         type="text"
                         placeholder="MM/YY"
-                        defaultValue="12/28"
                         className="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 font-mono"
                       />
                     </div>
@@ -590,7 +588,6 @@ export const DonationModal: React.FC<DonationModalProps> = ({
                       <input
                         type="password"
                         placeholder="•••"
-                        defaultValue="888"
                         maxLength={4}
                         className="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 font-mono"
                       />

@@ -430,7 +430,7 @@ export const VolunteerView: React.FC<VolunteerViewProps> = ({ onOpenDonateModal 
                         required
                         value={partPhone}
                         onChange={(e) => setPartPhone(e.target.value)}
-                        placeholder="e.g. +1 (202) 555-0199 or +233 24 123 4567"
+                        placeholder="e.g. +233 24 123 4567 or +1 (202) 441-9921"
                         className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-lg text-xs focus:bg-white focus:outline-none focus:ring-2 focus:ring-sky-500"
                       />
                     </div>
