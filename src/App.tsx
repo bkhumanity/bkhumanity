@@ -33,7 +33,6 @@ import { StoriesView } from './views/StoriesView';
 import { BlogView } from './views/BlogView';
 import { LegalView } from './views/LegalView';
 import { AdminView } from './views/AdminView';
-import { MaintenanceScreen } from './components/MaintenanceScreen';
 
 export default function App() {
   const [currentView, setCurrentView] = useState<string>('home');
@@ -116,46 +115,8 @@ export default function App() {
   const currentProject = projects.find((p) => p.id === selectedProjectId) || projects[0];
   const relatedProjects = projects.filter((p) => p.id !== selectedProjectId);
 
-  // If the site is paused from public view and user hasn't entered staff bypass passcode
-  if (settings.isSitePaused && !isAdminPreviewUnlocked) {
-    return (
-      <MaintenanceScreen
-        settings={settings}
-        onUnlock={() => setIsAdminPreviewUnlocked(true)}
-      />
-    );
-  }
-
   return (
     <div className="min-h-screen flex flex-col bg-[#F8FAFC] text-slate-800 antialiased">
-      {/* Staff Preview Notification Bar when site is paused */}
-      {settings.isSitePaused && (
-        <div className="bg-amber-400 text-slate-950 px-4 py-2.5 text-xs font-semibold flex flex-wrap items-center justify-between gap-3 sticky top-0 z-50 shadow-md border-b border-amber-500">
-          <div className="flex items-center gap-2">
-            <span className="w-2.5 h-2.5 rounded-full bg-slate-950 animate-ping shrink-0" />
-            <span>
-              <strong>Staff Preview Mode Active:</strong> The public site is currently <strong>PAUSED</strong>. Public visitors see the Private Preparation screen.
-            </span>
-          </div>
-          <div className="flex items-center gap-3 shrink-0">
-            <button
-              onClick={() => handleNavigate('admin')}
-              className="px-2.5 py-1 bg-slate-900 text-amber-300 rounded-md text-xs font-bold hover:bg-slate-800 transition-colors cursor-pointer"
-            >
-              Site Settings & Launch Controls
-            </button>
-            <button
-              onClick={() => {
-                sessionStorage.removeItem('bkh_staff_preview_unlocked');
-                setIsAdminPreviewUnlocked(false);
-              }}
-              className="px-2.5 py-1 bg-white text-slate-900 border border-slate-300 rounded-md text-xs font-bold hover:bg-slate-50 transition-colors cursor-pointer"
-            >
-              Re-lock Public View
-            </button>
-          </div>
-        </div>
-      )}
 
       {/* Sticky Navigation */}
       <Navbar

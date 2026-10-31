@@ -186,14 +186,14 @@ export interface BlogPost {
     | 'Real Estate & Housing'
     | 'Careers & NGO';
   pillar?: PillarType;
-  author: {
+  author?: {
     name: string;
     role: string;
     location: string;
     avatarUrl?: string;
   };
-  publishedAt: string;
-  readTimeMinutes: number;
+  publishedAt?: string;
+  readTimeMinutes?: number;
   imageUrl: string;
   tags: string[];
   focusKeyword?: string;

@@ -1,5 +1,6 @@
 import { Project, ImpactStat, Testimonial, GalleryItem, SiteSettings, Donation, FieldVideo, BlogPost } from '../types';
 import { blogArticles15 } from './blogArticles15';
+import { blogArticles10More } from './blogArticles10More';
 
 export const initialSiteSettings: SiteSettings = {
   orgName: 'BK CONSTRUCTION',
@@ -23,11 +24,11 @@ export const initialSiteSettings: SiteSettings = {
     instagram: 'https://instagram.com/bkhumanity',
     linkedin: 'https://linkedin.com/company/bkhumanity',
   },
-  announcementNotice: 'Development Demonstration Mode: Financial figures & impact metrics are initial illustrative benchmarks editable via the Admin Dashboard.',
-  isSitePaused: true,
+  announcementNotice: 'Verified Field Operations: Dedicated to sustainable clean water boreholes, youth TVET construction apprenticeships, and girl-child education in Ghana.',
+  isSitePaused: false,
   maintenanceHeadline: 'Official Portal Staging & Private Preparation',
   maintenanceMessage: 'Access to this public portal is temporarily paused while final domain linkage, security audits, and system configuration are being completed. Please check back soon or contact our offices below.',
-  maintenancePasscode: 'admin@2024',
+  maintenancePasscode: '',
 };
 
 export const initialImpactStats: ImpactStat[] = [
@@ -452,6 +453,7 @@ export const initialVideos: FieldVideo[] = [
 
 export const initialBlogPosts: BlogPost[] = [
   ...blogArticles15,
+  ...blogArticles10More,
   {
     id: 'post-1',
     slug: 'solar-powered-boreholes-water-crisis-northern-ghana',

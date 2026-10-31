@@ -68,7 +68,7 @@ export const BlogView: React.FC<BlogViewProps> = ({
         post.title.toLowerCase().includes(q) ||
         post.excerpt.toLowerCase().includes(q) ||
         post.tags.some((t) => t.toLowerCase().includes(q)) ||
-        post.author.name.toLowerCase().includes(q);
+        (post.author?.name ? post.author.name.toLowerCase().includes(q) : false);
       return matchesCategory && matchesQuery;
     });
   }, [posts, selectedCategory, searchQuery]);

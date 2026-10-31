@@ -28,11 +28,11 @@ const STORAGE_KEYS = {
   PARTNERSHIPS: 'bk_partnerships_v1',
   MESSAGES: 'bk_messages_v1',
   SUBSCRIBERS: 'bk_subscribers_v1',
-  SETTINGS: 'bk_settings_v1',
+  SETTINGS: 'bk_settings_v3',
   STATS: 'bk_stats_v1',
   TESTIMONIALS: 'bk_testimonials_v1',
   VIDEOS: 'bk_videos_v1',
-  BLOG_POSTS: 'bk_blog_posts_v4',
+  BLOG_POSTS: 'bk_blog_posts_v5',
 };
 
 type Listener = () => void;
@@ -283,10 +283,8 @@ export function getSiteSettings(): SiteSettings {
     ghanaOffice: { ...initialSiteSettings.ghanaOffice, ...(saved.ghanaOffice || {}) },
     usaOffice: { ...initialSiteSettings.usaOffice, ...(saved.usaOffice || {}) },
     socialUrls: { ...initialSiteSettings.socialUrls, ...(saved.socialUrls || {}) },
-    isSitePaused: saved.isSitePaused !== undefined ? saved.isSitePaused : initialSiteSettings.isSitePaused,
-    maintenancePasscode: (!saved.maintenancePasscode || saved.maintenancePasscode === 'admin123')
-      ? 'admin@2024'
-      : saved.maintenancePasscode,
+    isSitePaused: false,
+    maintenancePasscode: '',
   };
 }
 

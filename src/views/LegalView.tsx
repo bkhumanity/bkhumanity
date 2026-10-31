@@ -102,6 +102,27 @@ export const LegalView: React.FC<LegalViewProps> = ({ initialTab = 'privacy' }) 
               <p>
                 All photographs of African communities, children, and youth apprentices displayed on this website are published with dignity, cultural respect, and prior consent from community leaders, school headteachers, and guardians.
               </p>
+              <h3 className="font-bold text-slate-900 text-base pt-2">4. Cookies and Advertising Partners (Google AdSense)</h3>
+              <p>
+                To help support our humanitarian initiatives and keep our educational field guides free and accessible to communities worldwide, we work with trusted advertising partners, including <strong>Google AdSense</strong>.
+              </p>
+              <p>
+                Here is how advertising cookies work on our platform in simple, transparent terms:
+              </p>
+              <ul className="list-disc pl-5 space-y-2 text-slate-600">
+                <li>
+                  <strong>How Ads Are Served:</strong> Third-party vendors, including Google, use digital cookies to show relevant, helpful advertisements to visitors based on their previous visits to this website or other sites across the internet.
+                </li>
+                <li>
+                  <strong>Personalized Advertising:</strong> Google's use of advertising cookies enables it and its partners to serve ads that are tailored to your interests based on your browsing visits. These cookies do not store private identifying secrets like your bank details, passwords, or personal telephone numbers.
+                </li>
+                <li>
+                  <strong>You Have Complete Control:</strong> You can turn off personalized advertising at any time whenever you wish. You can easily manage or disable personalized ads by visiting Google’s official Ads Settings at <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener noreferrer" className="text-emerald-700 underline font-medium hover:text-emerald-800">google.com/settings/ads</a>. You can also opt out of third-party advertising cookies generally by visiting <a href="https://www.aboutads.info/choices" target="_blank" rel="noopener noreferrer" className="text-emerald-700 underline font-medium hover:text-emerald-800">aboutads.info/choices</a>.
+                </li>
+                <li>
+                  <strong>Essential Site Cookies:</strong> We also use basic functional cookies to remember display preferences (like your preferred currency) and keep our contact forms secure. These are standard across the web and help the website run smoothly.
+                </li>
+              </ul>
             </div>
           )}
 
