@@ -10,6 +10,7 @@ import {
   SiteSettings,
   FieldVideo,
   BlogPost,
+  HeroSlide,
 } from '../types';
 import {
   initialProjects,
@@ -19,6 +20,7 @@ import {
   initialSiteSettings,
   initialVideos,
   initialBlogPosts,
+  initialHeroSlides,
 } from '../data/mockData';
 
 const STORAGE_KEYS = {
@@ -33,6 +35,7 @@ const STORAGE_KEYS = {
   TESTIMONIALS: 'bk_testimonials_v1',
   VIDEOS: 'bk_videos_v1',
   BLOG_POSTS: 'bk_blog_posts_v6',
+  HERO_SLIDES: 'bk_hero_slides_v5',
 };
 
 type Listener = () => void;
@@ -411,6 +414,39 @@ export function deleteBlogPost(id: string): void {
   setJSON(STORAGE_KEYS.BLOG_POSTS, current);
 }
 
+// Hero Slides (10 Project Slides)
+export function getHeroSlides(): HeroSlide[] {
+  const loaded = getJSON<HeroSlide[]>(STORAGE_KEYS.HERO_SLIDES, initialHeroSlides);
+  if (!loaded || loaded.length === 0) {
+    return initialHeroSlides;
+  }
+  return loaded.map((s) => ({
+    ...s,
+    mediaUrl: s.mediaType === 'image' ? sanitizeImagePath(s.mediaUrl) : s.mediaUrl,
+    durationSeconds: s.durationSeconds || 10,
+  }));
+}
+
+export function saveHeroSlide(slide: HeroSlide): void {
+  const current = getHeroSlides();
+  const index = current.findIndex((s) => s.id === slide.id);
+  if (index >= 0) {
+    current[index] = slide;
+  } else {
+    current.push(slide);
+  }
+  setJSON(STORAGE_KEYS.HERO_SLIDES, current);
+}
+
+export function updateHeroSlides(slides: HeroSlide[]): void {
+  setJSON(STORAGE_KEYS.HERO_SLIDES, slides);
+}
+
+export function resetHeroSlides(): void {
+  localStorage.removeItem(STORAGE_KEYS.HERO_SLIDES);
+  notify();
+}
+
 // Reset all store data to defaults (for testing in Admin)
 export function resetStoreToDefaults(): void {
   localStorage.removeItem(STORAGE_KEYS.PROJECTS);
@@ -424,5 +460,6 @@ export function resetStoreToDefaults(): void {
   localStorage.removeItem(STORAGE_KEYS.TESTIMONIALS);
   localStorage.removeItem(STORAGE_KEYS.VIDEOS);
   localStorage.removeItem(STORAGE_KEYS.BLOG_POSTS);
+  localStorage.removeItem(STORAGE_KEYS.HERO_SLIDES);
   notify();
 }

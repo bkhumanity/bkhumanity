@@ -10,6 +10,7 @@ import {
   getTestimonials,
   getVideos,
   getBlogPosts,
+  getHeroSlides,
   subscribeToStore,
 } from './services/storage';
 import { initialGallery } from './data/mockData';
@@ -64,6 +65,7 @@ export default function App() {
   const [testimonials, setTestimonials] = useState(getTestimonials());
   const [videos, setVideos] = useState(getVideos());
   const [blogPosts, setBlogPosts] = useState(getBlogPosts());
+  const [heroSlides, setHeroSlides] = useState(getHeroSlides());
   const [selectedBlogSlug, setSelectedBlogSlug] = useState<string | undefined>(undefined);
   const [gallery] = useState(initialGallery);
 
@@ -79,6 +81,7 @@ export default function App() {
       setTestimonials(getTestimonials());
       setVideos(getVideos());
       setBlogPosts(getBlogPosts());
+      setHeroSlides(getHeroSlides());
     });
     return unsubscribe;
   }, []);
@@ -134,6 +137,7 @@ export default function App() {
             testimonials={testimonials}
             gallery={gallery}
             videos={videos}
+            heroSlides={heroSlides}
             onNavigate={handleNavigate}
             onOpenDonateModal={handleOpenDonate}
             onOpenLightbox={handleOpenLightbox}
@@ -218,6 +222,7 @@ export default function App() {
             settings={settings}
             stats={stats}
             videos={videos}
+            heroSlides={heroSlides}
             onNavigate={handleNavigate}
             onPlayVideo={handlePlayVideo}
           />

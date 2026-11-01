@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { Project, ImpactStat, Testimonial, GalleryItem, FieldVideo } from '../types';
+import { Project, ImpactStat, Testimonial, GalleryItem, FieldVideo, HeroSlide } from '../types';
 import { addNewsletterSubscriber, getBlogPosts } from '../services/storage';
 import { FAQs } from '../components/FAQs';
 import { VideoSection } from '../components/VideoSection';
@@ -26,6 +26,7 @@ interface HomeViewProps {
   testimonials: Testimonial[];
   gallery: GalleryItem[];
   videos: FieldVideo[];
+  heroSlides?: HeroSlide[];
   onNavigate: (view: string, projectId?: string) => void;
   onOpenDonateModal: (projectId?: string) => void;
   onOpenLightbox: (index: number) => void;
@@ -38,6 +39,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
   testimonials,
   gallery,
   videos,
+  heroSlides,
   onNavigate,
   onOpenDonateModal,
   onOpenLightbox,
@@ -75,9 +77,9 @@ export const HomeView: React.FC<HomeViewProps> = ({
   return (
     <div className="space-y-16 lg:space-y-24 pb-16">
       {/* =========================================================================
-          SECTION B: CINEMATIC MULTI-IMAGE HERO SHOWCASE
+          SECTION B: CINEMATIC MULTI-IMAGE & 10S VIDEO HERO SHOWCASE
       ========================================================================= */}
-      <HeroSlider onNavigate={onNavigate} onOpenDonateModal={onOpenDonateModal} />
+      <HeroSlider slides={heroSlides} onNavigate={onNavigate} onOpenDonateModal={onOpenDonateModal} />
 
       {/* =========================================================================
           SECTION C: IMPACT STATISTICS (With Count-Up & Demonstration Transparency)

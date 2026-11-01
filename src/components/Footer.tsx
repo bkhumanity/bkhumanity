@@ -1,6 +1,6 @@
 import React from 'react';
 import { Logo } from './Logo';
-import { MapPin, Phone, Mail, Heart, Facebook, Twitter, Instagram, Linkedin, ExternalLink } from 'lucide-react';
+import { MapPin, Phone, Mail, Heart, Facebook, Twitter, Instagram, Linkedin, ExternalLink, Youtube, Clock } from 'lucide-react';
 import { SiteSettings } from '../types';
 
 interface FooterProps {
@@ -33,46 +33,65 @@ export const Footer: React.FC<FooterProps> = ({
               <Logo variant="dark" size="md" />
             </button>
             <p className="text-xs text-slate-400 leading-relaxed max-w-sm">
-              We don&apos;t just build houses, we build futures. Dedicated to community empowerment across Ghana and international partnership via clean water, vocational construction trades, and girl child education.
+              {settings.footerBio || "We don't just build houses, we build futures. Dedicated to community empowerment across Ghana and international partnership via clean water, vocational construction trades, and girl child education."}
             </p>
             {/* Social media links */}
-            <div className="flex items-center gap-2.5 pt-2">
-              <a
-                href={settings.socialUrls.facebook}
-                target="_blank"
-                rel="noreferrer"
-                className="w-8 h-8 rounded-full bg-slate-800 hover:bg-[#0284C7] text-slate-300 hover:text-white flex items-center justify-center transition-colors"
-                aria-label="BK Construction on Facebook"
-              >
-                <Facebook className="w-4 h-4" />
-              </a>
-              <a
-                href={settings.socialUrls.twitter}
-                target="_blank"
-                rel="noreferrer"
-                className="w-8 h-8 rounded-full bg-slate-800 hover:bg-[#0EA5E9] text-slate-300 hover:text-white flex items-center justify-center transition-colors"
-                aria-label="BK Construction on X"
-              >
-                <Twitter className="w-4 h-4" />
-              </a>
-              <a
-                href={settings.socialUrls.instagram}
-                target="_blank"
-                rel="noreferrer"
-                className="w-8 h-8 rounded-full bg-slate-800 hover:bg-pink-600 text-slate-300 hover:text-white flex items-center justify-center transition-colors"
-                aria-label="BK Construction on Instagram"
-              >
-                <Instagram className="w-4 h-4" />
-              </a>
-              <a
-                href={settings.socialUrls.linkedin}
-                target="_blank"
-                rel="noreferrer"
-                className="w-8 h-8 rounded-full bg-slate-800 hover:bg-[#0A66C2] text-slate-300 hover:text-white flex items-center justify-center transition-colors"
-                aria-label="BK Construction on LinkedIn"
-              >
-                <Linkedin className="w-4 h-4" />
-              </a>
+            <div className="flex flex-wrap items-center gap-2.5 pt-2">
+              {settings.socialUrls.facebook && (
+                <a
+                  href={settings.socialUrls.facebook}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="w-8 h-8 rounded-full bg-slate-800 hover:bg-[#0284C7] text-slate-300 hover:text-white flex items-center justify-center transition-colors"
+                  aria-label="BK Construction on Facebook"
+                >
+                  <Facebook className="w-4 h-4" />
+                </a>
+              )}
+              {settings.socialUrls.twitter && (
+                <a
+                  href={settings.socialUrls.twitter}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="w-8 h-8 rounded-full bg-slate-800 hover:bg-[#0EA5E9] text-slate-300 hover:text-white flex items-center justify-center transition-colors"
+                  aria-label="BK Construction on X"
+                >
+                  <Twitter className="w-4 h-4" />
+                </a>
+              )}
+              {settings.socialUrls.instagram && (
+                <a
+                  href={settings.socialUrls.instagram}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="w-8 h-8 rounded-full bg-slate-800 hover:bg-pink-600 text-slate-300 hover:text-white flex items-center justify-center transition-colors"
+                  aria-label="BK Construction on Instagram"
+                >
+                  <Instagram className="w-4 h-4" />
+                </a>
+              )}
+              {settings.socialUrls.linkedin && (
+                <a
+                  href={settings.socialUrls.linkedin}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="w-8 h-8 rounded-full bg-slate-800 hover:bg-[#0A66C2] text-slate-300 hover:text-white flex items-center justify-center transition-colors"
+                  aria-label="BK Construction on LinkedIn"
+                >
+                  <Linkedin className="w-4 h-4" />
+                </a>
+              )}
+              {settings.socialUrls.youtube && (
+                <a
+                  href={settings.socialUrls.youtube}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="w-8 h-8 rounded-full bg-slate-800 hover:bg-red-600 text-slate-300 hover:text-white flex items-center justify-center transition-colors"
+                  aria-label="BK Construction on YouTube"
+                >
+                  <Youtube className="w-4 h-4" />
+                </a>
+              )}
             </div>
           </div>
 
@@ -166,7 +185,12 @@ export const Footer: React.FC<FooterProps> = ({
             <ul className="space-y-3 text-xs text-slate-400">
               <li className="flex items-start gap-2.5">
                 <MapPin className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                <span>{settings.ghanaOffice.city}</span>
+                <div className="leading-snug">
+                  <p className="text-white font-medium">{settings.ghanaOffice.city}</p>
+                  {settings.ghanaOffice.address && (
+                    <p className="text-[11px] text-slate-400 pt-0.5">{settings.ghanaOffice.address}</p>
+                  )}
+                </div>
               </li>
               <li className="flex items-center gap-2.5">
                 <Phone className="w-4 h-4 text-emerald-400 shrink-0" />
@@ -186,6 +210,12 @@ export const Footer: React.FC<FooterProps> = ({
                   {settings.ghanaOffice.email}
                 </a>
               </li>
+              {settings.ghanaOffice.hours && (
+                <li className="flex items-start gap-2.5 text-[11px] text-slate-400">
+                  <Clock className="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5" />
+                  <span>{settings.ghanaOffice.hours}</span>
+                </li>
+              )}
               <li className="pt-1">
                 <a
                   href={`https://wa.me/${settings.ghanaOffice.whatsapp}?text=Hello%20BK%20Construction%20NGO`}
@@ -208,7 +238,12 @@ export const Footer: React.FC<FooterProps> = ({
             <ul className="space-y-3 text-xs text-slate-400">
               <li className="flex items-start gap-2.5">
                 <MapPin className="w-4 h-4 text-sky-400 shrink-0 mt-0.5" />
-                <span>{settings.usaOffice.city}</span>
+                <div className="leading-snug">
+                  <p className="text-white font-medium">{settings.usaOffice.city}</p>
+                  {settings.usaOffice.address && (
+                    <p className="text-[11px] text-slate-400 pt-0.5">{settings.usaOffice.address}</p>
+                  )}
+                </div>
               </li>
               <li className="flex items-center gap-2.5">
                 <Phone className="w-4 h-4 text-sky-400 shrink-0" />
@@ -228,9 +263,16 @@ export const Footer: React.FC<FooterProps> = ({
                   {settings.usaOffice.email}
                 </a>
               </li>
-              <li className="pt-2 text-[11px] text-slate-500">
-                Liaison office coordinating international technical assistance, diaspora contributions, and corporate partnerships.
-              </li>
+              {settings.usaOffice.hours ? (
+                <li className="flex items-start gap-2.5 text-[11px] text-slate-400">
+                  <Clock className="w-3.5 h-3.5 text-sky-400 shrink-0 mt-0.5" />
+                  <span>{settings.usaOffice.hours}</span>
+                </li>
+              ) : (
+                <li className="pt-2 text-[11px] text-slate-500">
+                  Liaison office coordinating international technical assistance, diaspora contributions, and corporate partnerships.
+                </li>
+              )}
             </ul>
           </div>
         </div>
@@ -238,7 +280,7 @@ export const Footer: React.FC<FooterProps> = ({
         {/* Bottom Bar with Copyright & Legal Links */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
           <p className="text-center sm:text-left">
-            &copy; 2026 BK CONSTRUCTION HUMANITY FOR HABITAT NGO. All Rights Reserved.
+            {settings.copyrightText || '© 2026 BK CONSTRUCTION HUMANITY FOR HABITAT NGO. All Rights Reserved.'}
           </p>
           <div className="flex flex-wrap items-center justify-center gap-4 text-slate-400">
             <button

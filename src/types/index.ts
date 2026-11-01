@@ -139,27 +139,45 @@ export interface NewsletterSubscriber {
   active: boolean;
 }
 
+export interface HeroSlide {
+  id: string;
+  mediaType: 'image' | 'video'; // 'image' or 'video'
+  mediaUrl: string; // Image path or Video URL (YouTube, Vimeo, MP4)
+  kicker: string;
+  headline: string;
+  subtext: string;
+  projectId?: string;
+  durationSeconds?: number; // Slide display duration in seconds (default: 10)
+  objectPosition?: string;
+  videoMuted?: boolean;
+}
+
 export interface SiteSettings {
   orgName: string;
   tagline: string;
+  footerBio?: string;
+  copyrightText?: string;
   ghanaOffice: {
     city: string;
     address: string;
     phone: string;
     email: string;
     whatsapp: string;
+    hours?: string;
   };
   usaOffice: {
     city: string;
     address: string;
     phone: string;
     email: string;
+    hours?: string;
   };
   socialUrls: {
     facebook: string;
     twitter: string;
     instagram: string;
     linkedin: string;
+    youtube?: string;
   };
   announcementNotice: string;
   isSitePaused: boolean;

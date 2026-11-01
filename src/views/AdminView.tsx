@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Project,
   Donation,
@@ -8,6 +8,7 @@ import {
   SiteSettings,
   ImpactStat,
   FieldVideo,
+  HeroSlide,
 } from '../types';
 import {
   saveProject,
@@ -18,6 +19,10 @@ import {
   resetStoreToDefaults,
   saveVideo,
   deleteVideo,
+  getHeroSlides,
+  saveHeroSlide,
+  updateHeroSlides,
+  resetHeroSlides,
 } from '../services/storage';
 import {
   ShieldCheck,
@@ -42,6 +47,15 @@ import {
   EyeOff,
   Globe,
   KeyRound,
+  Sliders,
+  Image as ImageIcon,
+  Clock,
+  Sparkles,
+  MapPin,
+  Phone,
+  Mail,
+  Youtube,
+  ExternalLink,
 } from 'lucide-react';
 
 interface AdminViewProps {
@@ -53,6 +67,7 @@ interface AdminViewProps {
   settings: SiteSettings;
   stats: ImpactStat[];
   videos: FieldVideo[];
+  heroSlides?: HeroSlide[];
   onNavigate: (view: string) => void;
   onPlayVideo?: (video: FieldVideo) => void;
 }
@@ -66,6 +81,7 @@ export const AdminView: React.FC<AdminViewProps> = ({
   settings,
   stats,
   videos,
+  heroSlides: propHeroSlides,
   onNavigate,
   onPlayVideo,
 }) => {
@@ -75,7 +91,21 @@ export const AdminView: React.FC<AdminViewProps> = ({
   const [loginError, setLoginError] = useState('');
 
   // Active admin tab
-  const [adminTab, setAdminTab] = useState<'overview' | 'projects' | 'donations' | 'volunteers' | 'inquiries' | 'settings' | 'videos'>('overview');
+  const [adminTab, setAdminTab] = useState<
+    'overview' | 'slider' | 'projects' | 'donations' | 'volunteers' | 'inquiries' | 'settings' | 'videos'
+  >('overview');
+
+  // Hero Slider State (10 Slides)
+  const [adminSlides, setAdminSlides] = useState<HeroSlide[]>(() => propHeroSlides || getHeroSlides());
+  const [editingSlide, setEditingSlide] = useState<HeroSlide | null>(null);
+  const [isSlideModalOpen, setIsSlideModalOpen] = useState(false);
+  const [slideSavedMsg, setSlideSavedMsg] = useState(false);
+
+  useEffect(() => {
+    if (propHeroSlides) {
+      setAdminSlides(propHeroSlides);
+    }
+  }, [propHeroSlides]);
 
   // Project modal state
   const [editingProject, setEditingProject] = useState<Partial<Project> | null>(null);
@@ -259,6 +289,32 @@ export const AdminView: React.FC<AdminViewProps> = ({
     setTimeout(() => setSettingsSavedMsg(false), 3000);
   };
 
+  // Hero slide handlers
+  const handleEditSlide = (slide: HeroSlide) => {
+    setEditingSlide({ ...slide });
+    setIsSlideModalOpen(true);
+  };
+
+  const handleSaveSlideForm = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingSlide) return;
+    saveHeroSlide(editingSlide);
+    setAdminSlides(getHeroSlides());
+    setIsSlideModalOpen(false);
+    setEditingSlide(null);
+    setSlideSavedMsg(true);
+    setTimeout(() => setSlideSavedMsg(false), 3000);
+  };
+
+  const handleResetSlides = () => {
+    if (window.confirm('Reset all 10 hero banner slides back to initial default projects and photos?')) {
+      resetHeroSlides();
+      setAdminSlides(getHeroSlides());
+      setSlideSavedMsg(true);
+      setTimeout(() => setSlideSavedMsg(false), 3000);
+    }
+  };
+
   // Calculations for Overview
   const totalDonationsGHS = donations
     .filter((d) => d.status === 'Verified' && d.currency === 'GHS')
@@ -382,12 +438,13 @@ export const AdminView: React.FC<AdminViewProps> = ({
         <div className="flex items-center gap-2 p-1.5 bg-slate-100 rounded-2xl border border-slate-200 overflow-x-auto mb-8">
           {[
             { id: 'overview', label: 'Overview', icon: FolderKanban },
+            { id: 'slider', label: `Hero Slider (10 Slides)`, icon: Sliders },
             { id: 'projects', label: `Projects (${projects.length})`, icon: FolderKanban },
             { id: 'donations', label: `Donations (${donations.length})`, icon: Heart },
             { id: 'volunteers', label: `Volunteers (${volunteers.length})`, icon: Users },
             { id: 'inquiries', label: `Messages (${messages.length})`, icon: MessageSquare },
             { id: 'videos', label: `Field Videos (${videos.length})`, icon: Film },
-            { id: 'settings', label: 'Site Settings & Stats', icon: Settings },
+            { id: 'settings', label: 'Footer & Site Settings', icon: Settings },
           ].map((tab) => {
             const Icon = tab.icon;
             const isActive = adminTab === tab.id;
@@ -498,6 +555,105 @@ export const AdminView: React.FC<AdminViewProps> = ({
                   </tbody>
                 </table>
               </div>
+            </div>
+          </div>
+        )}
+
+        {/* =========================================================================
+            TAB: HERO BANNER SLIDER (10 SLIDES)
+        ========================================================================= */}
+        {adminTab === 'slider' && (
+          <div className="space-y-6">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-6 rounded-2xl border border-slate-200/80 shadow-xs">
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-800">
+                    Picture Slideshow
+                  </span>
+                </div>
+                <h3 className="text-lg font-bold text-[#0F2942] font-display mt-2">
+                  Homepage Hero Picture Slider
+                </h3>
+                <p className="text-xs text-slate-500 mt-1 max-w-2xl leading-relaxed">
+                  Manage the project pictures and stories displayed in your homepage hero banner. You can update any picture, headline, kicker badge, or description.
+                </p>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={handleResetSlides}
+                  className="py-2.5 px-4 text-xs font-semibold text-slate-600 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors cursor-pointer flex items-center gap-1.5"
+                >
+                  <RefreshCw className="w-3.5 h-3.5" />
+                  <span>Reset Slides to Baseline</span>
+                </button>
+              </div>
+            </div>
+
+            {slideSavedMsg && (
+              <div className="p-3.5 bg-emerald-50 border border-emerald-300 text-emerald-800 text-xs rounded-xl flex items-center gap-2 animate-fade-in">
+                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                <span>Hero banner changes saved! Your homepage now reflects the updated picture slide.</span>
+              </div>
+            )}
+
+            {/* Slides Cards Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {adminSlides.map((slide, idx) => (
+                <div
+                  key={slide.id}
+                  className="bg-white rounded-2xl border border-slate-200/80 overflow-hidden shadow-xs hover:shadow-md transition-all flex flex-col justify-between"
+                >
+                  <div>
+                    {/* Visual media preview */}
+                    <div className="relative aspect-video bg-slate-900 overflow-hidden">
+                      <img
+                        src={slide.mediaUrl}
+                        alt={slide.headline}
+                        className="w-full h-full object-cover"
+                      />
+                      <span className="absolute top-2 left-2 bg-emerald-600 text-white text-[10px] font-bold px-2.5 py-0.5 rounded-full flex items-center gap-1">
+                        <ImageIcon className="w-3 h-3" />
+                        <span>Photo</span>
+                      </span>
+
+                      <span className="absolute top-2 right-2 bg-black/70 text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full backdrop-blur-md">
+                        Slide #{idx + 1}
+                      </span>
+                    </div>
+
+                    <div className="p-4 space-y-2">
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md inline-block">
+                        {slide.kicker}
+                      </span>
+                      <h4 className="text-sm font-bold text-[#0F2942] leading-snug">
+                        {slide.headline}
+                      </h4>
+                      <p className="text-xs text-slate-500 line-clamp-2 leading-relaxed">
+                        {slide.subtext}
+                      </p>
+                      {slide.projectId && (
+                        <p className="text-[11px] text-sky-700 font-medium">
+                          Linked Project: {projects.find((p) => p.id === slide.projectId)?.title || slide.projectId}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="p-3 bg-slate-50 border-t border-slate-100 flex items-center justify-between">
+                    <span className="text-[11px] text-slate-500 font-medium">
+                      Homepage Picture Slide
+                    </span>
+                    <button
+                      onClick={() => handleEditSlide(slide)}
+                      className="px-3.5 py-1.5 text-xs font-semibold text-emerald-700 hover:text-emerald-800 bg-emerald-50 hover:bg-emerald-100 rounded-lg transition-colors flex items-center gap-1.5 cursor-pointer"
+                    >
+                      <Edit2 className="w-3.5 h-3.5" />
+                      <span>Edit Slide</span>
+                    </button>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         )}
@@ -962,17 +1118,89 @@ export const AdminView: React.FC<AdminViewProps> = ({
               </div>
             </div>
 
-            {/* Contact Details Editor */}
+            {/* Footer Bio & Mission Statement */}
             <div className="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200/80 shadow-xs space-y-4">
-              <h3 className="text-base font-bold text-[#0F2942] font-display">
-                Ghana & USA Official Contact Configuration
+              <h3 className="text-base font-bold text-[#0F2942] font-display flex items-center gap-2">
+                <Sparkles className="w-4 h-4 text-emerald-600" />
+                <span>Footer Mission Bio & About Blurb</span>
               </h3>
+              <p className="text-xs text-slate-500">
+                This short blurb appears directly beneath the logo in the site footer across all pages.
+              </p>
+              <div>
+                <label className="block text-xs font-semibold text-slate-700 mb-1">
+                  Footer Summary Text
+                </label>
+                <textarea
+                  rows={3}
+                  value={editSettings.footerBio || ''}
+                  onChange={(e) => setEditSettings({ ...editSettings, footerBio: e.target.value })}
+                  placeholder="We don't just build houses, we build futures. Dedicated to community empowerment across Ghana..."
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-xs leading-relaxed"
+                />
+              </div>
+            </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                <div className="space-y-3">
-                  <h4 className="text-xs font-bold uppercase text-emerald-800">Ghana Office</h4>
+            {/* Contact Details Editor: Ghana & USA */}
+            <div className="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200/80 shadow-xs space-y-6">
+              <div>
+                <h3 className="text-base font-bold text-[#0F2942] font-display flex items-center gap-2">
+                  <MapPin className="w-4 h-4 text-emerald-600" />
+                  <span>Ghana & USA Official Contact Configuration</span>
+                </h3>
+                <p className="text-xs text-slate-500 mt-1">
+                  Manage all phone numbers, physical addresses, emails, and operating hours shown in the footer and contact page.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                {/* Ghana Office */}
+                <div className="p-4 bg-emerald-50/50 rounded-xl border border-emerald-100 space-y-3">
+                  <div className="flex items-center gap-2 pb-1 border-b border-emerald-100">
+                    <span className="text-xs font-bold uppercase tracking-wider text-emerald-800">
+                      Ghana National Headquarters
+                    </span>
+                  </div>
+
                   <div>
-                    <label className="block text-[11px] text-slate-600 mb-1">Phone Number</label>
+                    <label className="block text-[11px] font-semibold text-slate-700 mb-1">
+                      City & Region
+                    </label>
+                    <input
+                      type="text"
+                      value={editSettings.ghanaOffice.city}
+                      onChange={(e) =>
+                        setEditSettings({
+                          ...editSettings,
+                          ghanaOffice: { ...editSettings.ghanaOffice, city: e.target.value },
+                        })
+                      }
+                      className="w-full px-3 py-1.5 text-xs bg-white border border-slate-300 rounded-lg"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-[11px] font-semibold text-slate-700 mb-1">
+                      Full Physical / Street Address
+                    </label>
+                    <input
+                      type="text"
+                      value={editSettings.ghanaOffice.address || ''}
+                      onChange={(e) =>
+                        setEditSettings({
+                          ...editSettings,
+                          ghanaOffice: { ...editSettings.ghanaOffice, address: e.target.value },
+                        })
+                      }
+                      placeholder="e.g. Plot 14, Independence Avenue, Airport Residential Area, Accra"
+                      className="w-full px-3 py-1.5 text-xs bg-white border border-slate-300 rounded-lg"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-[11px] font-semibold text-slate-700 mb-1">
+                      Official Telephone Number
+                    </label>
                     <input
                       type="text"
                       value={editSettings.ghanaOffice.phone}
@@ -982,11 +1210,14 @@ export const AdminView: React.FC<AdminViewProps> = ({
                           ghanaOffice: { ...editSettings.ghanaOffice, phone: e.target.value },
                         })
                       }
-                      className="w-full px-3 py-1.5 text-xs bg-slate-50 border border-slate-300 rounded-lg"
+                      className="w-full px-3 py-1.5 text-xs bg-white border border-slate-300 rounded-lg"
                     />
                   </div>
+
                   <div>
-                    <label className="block text-[11px] text-slate-600 mb-1">Email</label>
+                    <label className="block text-[11px] font-semibold text-slate-700 mb-1">
+                      Official Inquiries Email
+                    </label>
                     <input
                       type="email"
                       value={editSettings.ghanaOffice.email}
@@ -996,11 +1227,14 @@ export const AdminView: React.FC<AdminViewProps> = ({
                           ghanaOffice: { ...editSettings.ghanaOffice, email: e.target.value },
                         })
                       }
-                      className="w-full px-3 py-1.5 text-xs bg-slate-50 border border-slate-300 rounded-lg"
+                      className="w-full px-3 py-1.5 text-xs bg-white border border-slate-300 rounded-lg"
                     />
                   </div>
+
                   <div>
-                    <label className="block text-[11px] text-slate-600 mb-1">WhatsApp Number (Digits only)</label>
+                    <label className="block text-[11px] font-semibold text-slate-700 mb-1">
+                      WhatsApp Number (Digits only with country code, e.g. 233241234567)
+                    </label>
                     <input
                       type="text"
                       value={editSettings.ghanaOffice.whatsapp}
@@ -1010,15 +1244,76 @@ export const AdminView: React.FC<AdminViewProps> = ({
                           ghanaOffice: { ...editSettings.ghanaOffice, whatsapp: e.target.value },
                         })
                       }
-                      className="w-full px-3 py-1.5 text-xs bg-slate-50 border border-slate-300 rounded-lg font-mono"
+                      className="w-full px-3 py-1.5 text-xs bg-white border border-slate-300 rounded-lg font-mono"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-[11px] font-semibold text-slate-700 mb-1">
+                      Office Working Hours
+                    </label>
+                    <input
+                      type="text"
+                      value={editSettings.ghanaOffice.hours || ''}
+                      onChange={(e) =>
+                        setEditSettings({
+                          ...editSettings,
+                          ghanaOffice: { ...editSettings.ghanaOffice, hours: e.target.value },
+                        })
+                      }
+                      placeholder="e.g. Monday – Friday: 8:00 AM – 5:30 PM GMT"
+                      className="w-full px-3 py-1.5 text-xs bg-white border border-slate-300 rounded-lg"
                     />
                   </div>
                 </div>
 
-                <div className="space-y-3">
-                  <h4 className="text-xs font-bold uppercase text-sky-800">USA Office</h4>
+                {/* USA Office */}
+                <div className="p-4 bg-sky-50/50 rounded-xl border border-sky-100 space-y-3">
+                  <div className="flex items-center gap-2 pb-1 border-b border-sky-100">
+                    <span className="text-xs font-bold uppercase tracking-wider text-sky-800">
+                      USA International Liaison Office
+                    </span>
+                  </div>
+
                   <div>
-                    <label className="block text-[11px] text-slate-600 mb-1">Phone Number</label>
+                    <label className="block text-[11px] font-semibold text-slate-700 mb-1">
+                      City & State
+                    </label>
+                    <input
+                      type="text"
+                      value={editSettings.usaOffice.city}
+                      onChange={(e) =>
+                        setEditSettings({
+                          ...editSettings,
+                          usaOffice: { ...editSettings.usaOffice, city: e.target.value },
+                        })
+                      }
+                      className="w-full px-3 py-1.5 text-xs bg-white border border-slate-300 rounded-lg"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-[11px] font-semibold text-slate-700 mb-1">
+                      Full Physical / Suite Address
+                    </label>
+                    <input
+                      type="text"
+                      value={editSettings.usaOffice.address || ''}
+                      onChange={(e) =>
+                        setEditSettings({
+                          ...editSettings,
+                          usaOffice: { ...editSettings.usaOffice, address: e.target.value },
+                        })
+                      }
+                      placeholder="e.g. 1629 K Street NW, Suite 300, Washington, D.C. 20006"
+                      className="w-full px-3 py-1.5 text-xs bg-white border border-slate-300 rounded-lg"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-[11px] font-semibold text-slate-700 mb-1">
+                      Official Telephone Number
+                    </label>
                     <input
                       type="text"
                       value={editSettings.usaOffice.phone}
@@ -1028,11 +1323,14 @@ export const AdminView: React.FC<AdminViewProps> = ({
                           usaOffice: { ...editSettings.usaOffice, phone: e.target.value },
                         })
                       }
-                      className="w-full px-3 py-1.5 text-xs bg-slate-50 border border-slate-300 rounded-lg"
+                      className="w-full px-3 py-1.5 text-xs bg-white border border-slate-300 rounded-lg"
                     />
                   </div>
+
                   <div>
-                    <label className="block text-[11px] text-slate-600 mb-1">Email</label>
+                    <label className="block text-[11px] font-semibold text-slate-700 mb-1">
+                      Official Inquiries Email
+                    </label>
                     <input
                       type="email"
                       value={editSettings.usaOffice.email}
@@ -1042,10 +1340,146 @@ export const AdminView: React.FC<AdminViewProps> = ({
                           usaOffice: { ...editSettings.usaOffice, email: e.target.value },
                         })
                       }
-                      className="w-full px-3 py-1.5 text-xs bg-slate-50 border border-slate-300 rounded-lg"
+                      className="w-full px-3 py-1.5 text-xs bg-white border border-slate-300 rounded-lg"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-[11px] font-semibold text-slate-700 mb-1">
+                      Office Working Hours / Liaison Note
+                    </label>
+                    <input
+                      type="text"
+                      value={editSettings.usaOffice.hours || ''}
+                      onChange={(e) =>
+                        setEditSettings({
+                          ...editSettings,
+                          usaOffice: { ...editSettings.usaOffice, hours: e.target.value },
+                        })
+                      }
+                      placeholder="e.g. Monday – Friday: 9:00 AM – 5:00 PM EST"
+                      className="w-full px-3 py-1.5 text-xs bg-white border border-slate-300 rounded-lg"
                     />
                   </div>
                 </div>
+              </div>
+            </div>
+
+            {/* Social Media Links & YouTube Channel */}
+            <div className="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200/80 shadow-xs space-y-4">
+              <h3 className="text-base font-bold text-[#0F2942] font-display flex items-center gap-2">
+                <Globe className="w-4 h-4 text-emerald-600" />
+                <span>Social Media Profiles & YouTube Channel</span>
+              </h3>
+              <p className="text-xs text-slate-500">
+                These links appear as icons in the header and footer.
+              </p>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div>
+                  <label className="block text-[11px] font-semibold text-slate-700 mb-1">
+                    YouTube Channel URL
+                  </label>
+                  <input
+                    type="url"
+                    value={editSettings.socialUrls.youtube || ''}
+                    onChange={(e) =>
+                      setEditSettings({
+                        ...editSettings,
+                        socialUrls: { ...editSettings.socialUrls, youtube: e.target.value },
+                      })
+                    }
+                    placeholder="https://youtube.com/@bkhumanity"
+                    className="w-full px-3 py-1.5 text-xs bg-slate-50 border border-slate-300 rounded-lg font-mono"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[11px] font-semibold text-slate-700 mb-1">
+                    Facebook URL
+                  </label>
+                  <input
+                    type="url"
+                    value={editSettings.socialUrls.facebook}
+                    onChange={(e) =>
+                      setEditSettings({
+                        ...editSettings,
+                        socialUrls: { ...editSettings.socialUrls, facebook: e.target.value },
+                      })
+                    }
+                    className="w-full px-3 py-1.5 text-xs bg-slate-50 border border-slate-300 rounded-lg font-mono"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[11px] font-semibold text-slate-700 mb-1">
+                    Twitter / X URL
+                  </label>
+                  <input
+                    type="url"
+                    value={editSettings.socialUrls.twitter}
+                    onChange={(e) =>
+                      setEditSettings({
+                        ...editSettings,
+                        socialUrls: { ...editSettings.socialUrls, twitter: e.target.value },
+                      })
+                    }
+                    className="w-full px-3 py-1.5 text-xs bg-slate-50 border border-slate-300 rounded-lg font-mono"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[11px] font-semibold text-slate-700 mb-1">
+                    Instagram URL
+                  </label>
+                  <input
+                    type="url"
+                    value={editSettings.socialUrls.instagram}
+                    onChange={(e) =>
+                      setEditSettings({
+                        ...editSettings,
+                        socialUrls: { ...editSettings.socialUrls, instagram: e.target.value },
+                      })
+                    }
+                    className="w-full px-3 py-1.5 text-xs bg-slate-50 border border-slate-300 rounded-lg font-mono"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[11px] font-semibold text-slate-700 mb-1">
+                    LinkedIn URL
+                  </label>
+                  <input
+                    type="url"
+                    value={editSettings.socialUrls.linkedin}
+                    onChange={(e) =>
+                      setEditSettings({
+                        ...editSettings,
+                        socialUrls: { ...editSettings.socialUrls, linkedin: e.target.value },
+                      })
+                    }
+                    className="w-full px-3 py-1.5 text-xs bg-slate-50 border border-slate-300 rounded-lg font-mono"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Footer Copyright Text */}
+            <div className="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200/80 shadow-xs space-y-4">
+              <h3 className="text-base font-bold text-[#0F2942] font-display">
+                Footer Copyright Text
+              </h3>
+              <p className="text-xs text-slate-500">
+                Official legal and copyright notice shown at the bottom of the footer.
+              </p>
+              <div>
+                <input
+                  type="text"
+                  value={editSettings.copyrightText || ''}
+                  onChange={(e) => setEditSettings({ ...editSettings, copyrightText: e.target.value })}
+                  placeholder="© 2026 BK CONSTRUCTION HUMANITY FOR HABITAT NGO. All Rights Reserved."
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-xs"
+                />
               </div>
             </div>
 
@@ -1446,6 +1880,167 @@ export const AdminView: React.FC<AdminViewProps> = ({
                   className="px-5 py-2 bg-emerald-600 text-white rounded-lg font-bold"
                 >
                   Save Project
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Edit Hero Slide Modal */}
+      {isSlideModalOpen && editingSlide && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs overflow-y-auto">
+          <div className="relative w-full max-w-lg bg-white rounded-2xl shadow-2xl p-6 sm:p-8 space-y-4 my-8">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+              <div>
+                <h3 className="text-lg font-bold text-[#0F2942] font-display">
+                  Edit Hero Slide #{adminSlides.findIndex((s) => s.id === editingSlide.id) + 1}
+                </h3>
+                <p className="text-xs text-slate-500">
+                  Switch between photography and 10-second video, update headline and links.
+                </p>
+              </div>
+              <button
+                onClick={() => setIsSlideModalOpen(false)}
+                className="text-slate-400 hover:text-slate-600 text-xl font-bold cursor-pointer"
+              >
+                &times;
+              </button>
+            </div>
+
+            <form onSubmit={handleSaveSlideForm} className="space-y-4 text-xs">
+              {/* Image URL Input */}
+              <div>
+                <label className="block font-bold text-slate-700 mb-1">
+                  Slide Picture URL or Path
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={editingSlide.mediaUrl || ''}
+                  onChange={(e) => setEditingSlide({ ...editingSlide, mediaUrl: e.target.value, mediaType: 'image' })}
+                  placeholder="/images/hero_borehole_joy_1793349139405.jpg"
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-xs font-mono"
+                />
+                <p className="text-[11px] text-slate-400 mt-1">
+                  Enter local image path (e.g. /images/...) or any high-resolution image link.
+                </p>
+              </div>
+
+              {/* Quick Image Picker */}
+              {editingSlide.mediaType === 'image' && (
+                <div>
+                  <label className="block text-[11px] font-semibold text-slate-600 mb-1">
+                    Quick Pick from Verified Project Photos:
+                  </label>
+                  <div className="flex flex-wrap gap-1.5">
+                    {[
+                      { label: 'Clean Water Joy', path: '/images/hero_borehole_joy_1793349139405.jpg' },
+                      { label: 'Girl Child STEM', path: '/images/hero_girl_education_1793349154660.jpg' },
+                      { label: 'TVET Masonry', path: '/images/hero_vocational_training_1793349168797.jpg' },
+                      { label: 'Modern Habitat', path: '/images/hero_modern_architecture_1793349107851.jpg' },
+                      { label: 'Water Security', path: '/images/hero_water_scarcity_1793349124145.jpg' },
+                      { label: 'Handover Joy', path: '/images/community_borehole_celebration_1793198752184.jpg' },
+                    ].map((img) => (
+                      <button
+                        type="button"
+                        key={img.path}
+                        onClick={() => setEditingSlide({ ...editingSlide, mediaUrl: img.path })}
+                        className="px-2 py-1 rounded bg-slate-100 hover:bg-emerald-100 text-[10px] text-slate-700 hover:text-emerald-800 transition-colors cursor-pointer"
+                      >
+                        {img.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Kicker */}
+              <div>
+                <label className="block font-bold text-slate-700 mb-1">Kicker Badge</label>
+                <input
+                  type="text"
+                  required
+                  value={editingSlide.kicker || ''}
+                  onChange={(e) => setEditingSlide({ ...editingSlide, kicker: e.target.value })}
+                  placeholder="e.g. Clean Water Security · Volta Region"
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-xs"
+                />
+              </div>
+
+              {/* Headline */}
+              <div>
+                <label className="block font-bold text-slate-700 mb-1">Slide Headline</label>
+                <input
+                  type="text"
+                  required
+                  value={editingSlide.headline || ''}
+                  onChange={(e) => setEditingSlide({ ...editingSlide, headline: e.target.value })}
+                  placeholder="e.g. SOLAR-POWERED WATER FOR 2,800 RESIDENTS"
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-xs font-bold"
+                />
+              </div>
+
+              {/* Subtext */}
+              <div>
+                <label className="block font-bold text-slate-700 mb-1">Subtext / Summary</label>
+                <textarea
+                  rows={3}
+                  required
+                  value={editingSlide.subtext || ''}
+                  onChange={(e) => setEditingSlide({ ...editingSlide, subtext: e.target.value })}
+                  placeholder="1-2 sentences summarizing this project initiative..."
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-xs leading-relaxed"
+                />
+              </div>
+
+              {/* Project Link & Duration */}
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block font-bold text-slate-700 mb-1">Linked Project</label>
+                  <select
+                    value={editingSlide.projectId || 'proj-1'}
+                    onChange={(e) => setEditingSlide({ ...editingSlide, projectId: e.target.value })}
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-xs"
+                  >
+                    {projects.map((p) => (
+                      <option key={p.id} value={p.id}>
+                        {p.title}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block font-bold text-slate-700 mb-1">Slide Duration (Seconds)</label>
+                  <input
+                    type="number"
+                    min={3}
+                    max={60}
+                    value={editingSlide.durationSeconds || 10}
+                    onChange={(e) =>
+                      setEditingSlide({ ...editingSlide, durationSeconds: parseInt(e.target.value) || 10 })
+                    }
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-xs font-mono"
+                  />
+                  <p className="text-[10px] text-slate-400 mt-0.5">Recommended: 10 seconds</p>
+                </div>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-100">
+                <button
+                  type="button"
+                  onClick={() => setIsSlideModalOpen(false)}
+                  className="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-lg cursor-pointer"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-5 py-2 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 rounded-lg shadow-sm cursor-pointer"
+                >
+                  Save Slide
                 </button>
               </div>
             </form>
